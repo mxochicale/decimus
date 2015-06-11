@@ -35,6 +35,11 @@ to clean
 
 $make clean
 
+
+Prior to run the application, it is recommended that you test the IMU sensor by using 
+sudo miniterm.py -d /dev/rfcomm0 -b 9600
+
+
 to run you should pair the bluetooth module [Section 3] and run the application
 
 $./main test 
