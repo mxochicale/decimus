@@ -1,10 +1,18 @@
-:x# Library Dependencies 
+
+# Library Dependencies 
+
 
 In order to make a more portable source code for the IMU application, I suggest creating the following directories in the home path
 
+```
 $ mkdir lib_dependencies
+```
 
 $ cd lib_dependencies
+
+to do so, you can run `setting_lib_dependecies.sh` script that runs automatically the below commands.
+
+ 
 
 
 # ARMADILLO LIBRARY 

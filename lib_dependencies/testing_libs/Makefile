@@ -12,7 +12,7 @@ CXX=g++
 ##
 # If you've installed Armadillo and boost's headers manually, 
 # you should need to tell the compiler where they are.
-LIB_DEP_PATH = /home/map479/lib_dependencies
+LIB_DEP_PATH = /home/map479-admin/lib_dependencies
 
 ARMA_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/armadillo-5.100.1/include
 BOOST_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/boost-1.58.0/include
