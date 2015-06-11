@@ -17,7 +17,7 @@
     
     License
     -------
-    CopyLeft (C) 2014 Miguel Perez-Xochicae
+    CopyLeft (C) 2014 Miguel P. Xochicae
     perez[dot]xochicale[at]gmail[dot]com
     
     Infos, updates, bug reports, contributions and feedback:

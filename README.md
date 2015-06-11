@@ -8,8 +8,11 @@ using [IMU razor-9dof](https://github.com/ptrbrtz/razor-9dof-ahrs). Additionally
 delay embedding theorem and PCA for the state space representation using [armadillo C++ linear algebra library](http://arma.sourceforge.net/).
 
 Infos, updates, bug reports, contributions and feedback: https://github.com/mxochicale/decimus
+
 CopyLeft (C) 2014 Miguel Perez-Xochicale
-perez[dot]xochicale[at]gmail[dot]com
+
+<perez[dot]xochicale[at]gmail[dot]com>
+
 
 2. decimus repository 
 ============================
@@ -48,6 +51,7 @@ contains an R file for read and plot the data from an csv file using acceleromet
 3. Pairing bluetooth 
 ============================
 
+It is recommended that you install blueman for pairing the bluetooh modules
 Example Usage
 --
 * Scan the nearby bluetooth connections 

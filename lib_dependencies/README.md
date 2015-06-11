@@ -1,16 +1,19 @@
+:x# Library Dependencies 
+
+In order to make a more portable source code for the IMU application, I suggest creating the following directories in the home path
 
 $ mkdir lib_dependencies
+
 $ cd lib_dependencies
 
 
-
-ARMADILLO
+# ARMADILLO LIBRARY 
 Downloading
 
 $wget http://sourceforge.net/projects/arma/files/armadillo-5.100.1.tar.gz
 $tar -xzf armadillo-5.100.1.tar.gz 
 
-INSTALLING BOOST
+# BOOST LIBRARY
 
 boost documentation 
 [http://www.boost.org/doc/libs/1_58_0/more/getting_started/unix-variants.html]
@@ -24,48 +27,45 @@ $tar --bzip2 -xf boost_1_58_0.tar.bz2
 
 $mkdir boost-1.58.0
 $cd boost-1.58.0/
+$mkdir lib64
+
 $pwd 
-/home/map479/Downloads/temporal/github_imu/debian_machine/lib_dependencies/boost-1.58.0
+~/lib_dependencies/boost-1.58.0
 
 5.1   Easy Build and Install
 Issue the following commands in the shell (don't type $; that represents the shell's prompt):
+
 $ cd path/to/boost_1_58_0
-$ ./bootstrap.sh --help
+
+$./bootstrap.sh --prefix=~/boost-1.58.0 --libdir=~/boost-1.58.0/lib64 
+
+$./b2 -d+2 --layout=system variant=release link=shared threading=multi runtime-link=shared linkflags="-Wl,-rpath,~/boost-1.58.0/lib64" install
+
+----for instance, installing on Ubuntu 14.04 LTS x64
+
+$./bootstrap.sh --prefix=/home/map479/lib_dependencies/boost-1.58.0  --libdir=/home/map479/lib_dependencies/boost-1.58.0/lib64
+
+$./b2 -d+2 --layout=system variant=release link=shared threading=multi runtime-link=shared linkflags="-Wl,-rpath,/home/map479/lib_dependencies/boost-1.58.0/lib64" install
+
+##ERROR 
+
+# include <pyconfig.h>
+                       ^
+compilation terminated.
+.
+.
+.
+...failed updating 28 targets...
 
 
-You'll probably want to at least use to install somewhere else.
+##SOLUTION
+http://stackoverflow.com/questions/8282231/ubuntu-i-have-python-but-gcc-cant-find-python-h
 
-	>>>Debian machine
-$./bootstrap.sh -prefix=/home/map479/Downloads/temporal/github_imu/debian_machine/lib_dependencies/boost-1.58.0 --libdir=/home/map479/Downloads/temporal/github_imu/debian_machine/lib_dependencies/boost-1.58.0/lib64
-
-Unicode/ICU support for Boost.Regex?... not found.
-
-$./b2 -d+2 --layout=system variant=release link=shared threading=multi runtime-link=shared linkflags="-Wl,-rpath,/home/map479/Downloads/temporal/github_imu/debian_machine/lib_dependencies/boost-1.58.0/lib64" install
-
-	>>>Ubuntu machine
-$./bootstrap.sh --prefix=/home/map479/Desktop --libdir=/home/map479/Desktop/lib64 
-$./b2 -d+2 --layout=system variant=release link=shared threading=multi runtime-link=shared linkflags="-Wl,-rpath,/home/map479/Desktop/lib64" install
-
-#$ sudo ./b2 -d+2 --layout=system variant=release link=shared threading=multi runtime-link=shared linkflags="-Wl,-rpath,/home/map479/Desktop/lib64" install
-#$      ./b2 -d+2 --layout=system variant=release link=shared threading=multi runtime-link=shared linkflags="-Wl,-rpath,${PREFIX}/lib64"
-#$ sudo ./b2 -d+2 --layout=system variant=release link=shared threading=multi runtime-link=shared linkflags="-Wl,-rpath,${PREFIX}/lib64" install
-
-Finally,
-#$ ./b2 install
-will leave Boost binaries in the lib/ subdirectory of your installation prefix. 
-You will also find a copy of the Boost headers in the include/ subdirectory of the installation prefix, 
-so you can henceforth use that directory as an #include path in place of the Boost root directory.
+$sudo apt-get install python-dev 
 
 
-
-
-
-
-
-
-
-
-
-
+#will leave Boost binaries in the lib/ subdirectory of your installation prefix. 
+#You will also find a copy of the Boost headers in the include/ subdirectory of the installation prefix, 
+#so you can henceforth use that directory as an #include path in place of the Boost root directory.
 
 

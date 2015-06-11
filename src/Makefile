@@ -1,5 +1,5 @@
 # 
-# CopyLeft (C) 2015  Miguel Perez-Xochicale
+# CopyLeft (C) 2015  Miguel P. Xochicale
 # [https://github.com/mxochicale/]
 # 
 #	This Makefile is part of Decimus Application
@@ -9,7 +9,7 @@
 #	
 
 fileinfo := Makefile for decimus app
-author   := Miguel Perez-Xochicale
+author   := Miguel P. Xochicale
 version  := 0.1.0
 
 # CHANGES:
@@ -21,16 +21,14 @@ version  := 0.1.0
 
 CXX=g++
 
-
 ##
-#If you've installed Armadillo and boost's headers manually, 
-#you may need to tell the compiler where they are.
-##
-ARMA_INCLUDE_FLAG = -I ../armadillo-5.100.1/include
+# If you've installed Armadillo and boost's headers manually, 
+# you should need to tell the compiler where they are.
+LIB_DEP_PATH = /home/map479/lib_dependencies
 
-BOOST_INCLUDE_FLAG = -I ../boost-1.58.0/include
-BOOST_LIB_FLAG=  -L ../boost-1.58.0/lib64
-
+ARMA_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/armadillo-5.100.1/include
+BOOST_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/boost-1.58.0/include
+BOOST_LIB_FLAG=  -L ${LIB_DEP_PATH}/boost-1.58.0/lib64
 
 LIB_FLAGS = -lblas -llapack -lpthread
 

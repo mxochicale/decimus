@@ -1,27 +1,23 @@
 fileinfo := Makefile for testing libraries
-author := Miguel Perez-Xochicale
+author := Miguel P. Xochicale
 version := 001 
 #TODO := concatenate the current directory with the armadillo path 
 #     ./boostregex: error while loading shared libraries: libboost_regex.so.1.58.0: cannot open shared object file: No such file or directory
-
-
-
 #current_dir = $(shell pwd)
 #current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))i
 #CUR_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-
 CXX=g++
 
 ##
-#If you've installed Armadillo and boost's headers manually, 
-#you may need to tell the compiler where they are.
-##
+# If you've installed Armadillo and boost's headers manually, 
+# you should need to tell the compiler where they are.
+LIB_DEP_PATH = /home/map479/lib_dependencies
 
-ARMA_INCLUDE_FLAG = -I ../armadillo-5.100.1/include
+ARMA_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/armadillo-5.100.1/include
+BOOST_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/boost-1.58.0/include
+BOOST_LIB_FLAG=  -L ${LIB_DEP_PATH}/boost-1.58.0/lib64
 
-BOOST_INCLUDE_FLAG = -I ../boost-1.58.0/include
-BOOST_LIB_FLAG=  -L ../boost-1.58.0/lib64
 
 CPP0X_FLAG = -std=c++0x 
 BOOST_REGEX = -lboost_regex
@@ -91,7 +87,7 @@ help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo " arma to compile armadillo example"
 	@echo " boostclock0 to compile boost library clock0 example"
-	@echo " boostclock1 to compile boost library clock0 example"
+	@echo " boostclock1 to compile boost library clock1 example"
 	@echo " boostposix to compile"
 	@echo " boostiterator to compile"
 	@echo " boostregex to compile"
