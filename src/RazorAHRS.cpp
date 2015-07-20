@@ -13,16 +13,13 @@
 ******************************************************************************************/
 
 #include "RazorAHRS.h"
-#include <cassert> 
-//assert.h defines one macro function that can be used as a standard debugging tool.
-//http://stackoverflow.com/questions/10625716/in-what-cases-we-need-to-include-cassert
-
+#include <cassert>
 
 RazorAHRS::RazorAHRS(const std::string &port, DataCallbackFunc data_func, ErrorCallbackFunc error_func,
-    Mode mode, int connect_timeout_dims, speed_t speed)
-    : _dimode(mode)
+    Mode mode, int connect_timeout_ms, speed_t speed)
+    : _mode(mode)
     , _input_pos(0)
-    , _connect_timeout_dims(connect_timeout_dims)
+    , _connect_timeout_ms(connect_timeout_ms)
     , data(data_func)
     , error(error_func)
     , _thread_id(0)
@@ -89,41 +86,13 @@ RazorAHRS::RazorAHRS(const std::string &port, DataCallbackFunc data_func, ErrorC
   _start_io_thread();
 }
 
-
-
 RazorAHRS::~RazorAHRS()
 {
-    //std::cout << "destructor"  << std::endl;
   // if thread was started, stop thread
   if (_thread_id) _stop_io_thread();
   close(_serial_port);
+  
 }
-
-
-void 
-RazorAHRS::_start_io_thread()
-{
-        // create thread
-      pthread_create(&_thread_id , NULL, _thread_starter, this);  
-}
-
-void 
-RazorAHRS::_stop_io_thread()
-{
-      void *thread_exit_status; // dummy
-      _stop_thread = true;
-      pthread_join(_thread_id , &thread_exit_status);
-}
-
-
-void* RazorAHRS::_thread_starter ( void* arg )
-{
-      return reinterpret_cast<RazorAHRS*> (arg)->_thread(NULL);
-}
-
-
-
-
 
 bool
 RazorAHRS::_read_token(const std::string &token, char c)
@@ -164,8 +133,6 @@ RazorAHRS::_init_razor()
   write(_serial_port, contact_synch_request.data(), contact_synch_request.length());
   gettimeofday(&t1, NULL);
 
-//   	  std::cout << "request_synch_reply OK"  << std::endl;
-  
   // set non-blocking I/O
   if (!_set_nonblocking_io()) return false;
 
@@ -193,14 +160,14 @@ RazorAHRS::_init_razor()
 
     // check timeout
     gettimeofday(&t2, NULL);
-    if (elapsed_dims(t1, t2) > 200)
+    if (elapsed_ms(t1, t2) > 200)
     {
       // 200ms elapsed since last request and no answer -> request synch again
       // (this happens when DTR is connected and Razor resets on connect)
       write(_serial_port, contact_synch_request.data(), contact_synch_request.length());
       t1 = t2;
     }
-    if (elapsed_dims(t0, t2) > _connect_timeout_dims)
+    if (elapsed_ms(t0, t2) > _connect_timeout_ms)
       // timeout -> tracker not present
       throw std::runtime_error("Can not init: tracker does not answer.");
   }
@@ -214,14 +181,13 @@ RazorAHRS::_init_razor()
   const std::string config_synch_reply = synch_token + config_synch_id + new_line;
 
   std::string config = "#o1#oe0#s" + config_synch_id;
-  if (_dimode == YAW_PITCH_ROLL) config = "#ob" + config;
-  else if (_dimode == ACC_MAG_GYR_RAW) config = "#osrb" + config;
-  else if (_dimode == ACC_MAG_GYR_CALIBRATED) config = "#oscb" + config;
+  if (_mode == YAW_PITCH_ROLL) config = "#ob" + config;
+  else if (_mode == ACC_MAG_GYR_RAW) config = "#osrb" + config;
+  else if (_mode == ACC_MAG_GYR_CALIBRATED) config = "#oscb" + config;
   else throw std::runtime_error("Can not init: unknown 'mode' parameter.");  
 
   write(_serial_port, config.data(), config.length());
   
- 
   // set blocking I/O
   // (actually semi-blocking, because VTIME is set)
   if (!_set_blocking_io()) return false;
@@ -252,8 +218,6 @@ RazorAHRS::_init_razor()
   return true;
 }
 
-
-
 bool
 RazorAHRS::_open_serial_port(const char *port)
 {
@@ -268,8 +232,6 @@ RazorAHRS::_open_serial_port(const char *port)
   close(_serial_port);
   return false;
 }
-
-
 
 bool
 RazorAHRS::_set_blocking_io()
@@ -287,9 +249,6 @@ RazorAHRS::_set_blocking_io()
   return false;
 }
 
-
-
-
 bool
 RazorAHRS::_set_nonblocking_io()
 {
@@ -305,17 +264,13 @@ RazorAHRS::_set_nonblocking_io()
   return false;
 }
 
-
-
 bool
 RazorAHRS::_is_io_blocking()
 {
   return (fcntl(_serial_port, F_GETFL, 0) & O_NDELAY);
 }
 
-
-
-void* 
+void*
 RazorAHRS::_thread(void *arg)
 {
   char c;
@@ -343,7 +298,7 @@ RazorAHRS::_thread(void *arg)
       // (type-punning: aliasing with char* is ok)
       (reinterpret_cast<char*> (&_input_buf))[_input_pos++] = c;
       
-      if (_dimode == YAW_PITCH_ROLL) {  // 3 floats
+      if (_mode == YAW_PITCH_ROLL) {  // 3 floats
         if (_input_pos == 12) // we received a full frame
         {
           // convert endianess if necessary
@@ -388,9 +343,8 @@ RazorAHRS::_thread(void *arg)
   return arg;
 }
 
-
-
-void RazorAHRS::_DISABLE_continuous_streaming_output()
+void 
+RazorAHRS::disable_continuous_streaming_output()
 {
 
   std::string config = "#o0";  

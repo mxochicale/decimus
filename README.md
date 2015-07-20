@@ -41,8 +41,9 @@ sudo miniterm.py -d /dev/rfcomm0 -b 9600
 
 
 to run you should pair the bluetooth module [Section 3] and run the application
+as a root user
 
-$./main test 
+$sudo /main test 
 
 data
 ---
@@ -136,6 +137,8 @@ Devices:
 	hci0	AC:72:89:A3:17:B7
 
 
+References:
+https://myraspberryandme.wordpress.com/2013/11/20/bluetooth-serial-communication-with-hc-05/
 
 
 

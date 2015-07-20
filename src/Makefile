@@ -1,36 +1,27 @@
-# 
-# CopyLeft (C) 2015  Miguel P. Xochicale
-# [https://github.com/mxochicale/]
-# 
-#	This Makefile is part of Decimus Application
-#	   
-#	# If you've installed Armadillo and boost's headers manually,
-#       # you may need to tell the compiler where they are.
-#	
-
-fileinfo := Makefile for decimus app
-author   := Miguel P. Xochicale
-version  := 0.1.0
-
-# CHANGES:
-# mxochicale (2015-05-18):
-# * Add clean temporary files
-# * Add help target 
-
-# ** Bump version to 0.1.0
+#
+# fileinfo := Makefile for decimus class
+# author := Miguel Perez-Xochicale
+# version := alpha00
+#
+# https://github.com/mxochicale/decimus
+# 	
 
 CXX=g++
 
 ##
 # If you've installed Armadillo and boost's headers manually, 
 # you should need to tell the compiler where they are.
-LIB_DEP_PATH = /home/map479/lib_dependencies
+LIB_DEP_PATH = /home/map479-admin/lib_dependencies
 
 ARMA_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/armadillo-5.100.1/include
 BOOST_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/boost-1.58.0/include
 BOOST_LIB_FLAG=  -L ${LIB_DEP_PATH}/boost-1.58.0/lib64
 
-LIB_FLAGS = -lblas -llapack -lpthread
+LIB_FLAGS = -lblas -llapack -lpthread -lboost_system
+#-lboost_system (need it to create a directory)
+
+CLASSES = RazorAHRS.cpp Decimus.cpp
+FLAGS = -Wall -D_REENTRANT 
 
 OPT = -O2
 ## As the Armadillo library uses recursive templates, compilation times depend on the level of optimisation:
@@ -40,22 +31,20 @@ OPT = -O2
 ## -O3: enables auto vectorisation when using gcc
 
 
-CLASSES = RazorAHRS.cpp Decimus.cpp 
-FLAGS = -Wall -D_REENTRANT 
-
 CXXFLAGS = $(ARMA_INCLUDE_FLAG) $(FLAGS) $(BOOST_INCLUDE_FLAG) $(BOOST_LIB_FLAG) $(OPT)
+
 
 all: main
 
 main: main.cpp
 	g++ $(CXXFLAGS) -o $@ $< $(CLASSES) $(LIB_FLAGS)
-	
+
 .PHONY: clean help
 
 clean: 
-	rm -f main *.*~ *~
+	rm -f main example *.*~ *~
 	@echo "Clean done"
-                  
+
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
 	@echo " clean to remove binary and temporary files"                       

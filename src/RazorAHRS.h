@@ -26,10 +26,6 @@
 #include <errno.h>
 #include <sys/time.h>
 
-#include <iostream>   // std::cout, std::endl;
-
-
-
 #ifndef _REENTRANT
 #error You need to compile with _REENTRANT defined since this uses threads!
 #endif
@@ -48,22 +44,20 @@ class RazorAHRS
     typedef std::tr1::function<void(const std::string&)> ErrorCallbackFunc;
 
     RazorAHRS(const std::string &port, DataCallbackFunc data_func, ErrorCallbackFunc error_func,
-//         Mode mode, int connect_timeout_dims = 5000, speed_t speed = B57600);
-    Mode mode, int connect_timeout_dims = 5000, speed_t speed = B9600);
-      
-    
+        Mode mode, int connect_timeout_ms = 5000, speed_t speed = B57600);
     ~RazorAHRS();
-    
+
     //send #o0 to stop the streaming 
-    void _DISABLE_continuous_streaming_output();
+    void disable_continuous_streaming_output();
+
 
     
   private:
- 
-
-    Mode _dimode;
+    Mode _mode;
   
-    // serial port helpers
+    /**
+     * serial port helpers
+     * */ 
     bool _open_serial_port(const char *port);
     bool _set_blocking_io();
     bool _set_nonblocking_io();
@@ -71,9 +65,9 @@ class RazorAHRS
 
     bool _read_token(const std::string &token, char c);
     bool _init_razor();
-     
+    
     // timing
-    long elapsed_dims(struct timeval start, struct timeval end)
+    long elapsed_ms(struct timeval start, struct timeval end)
     {
       return static_cast<long> ((end.tv_sec - start.tv_sec) * 1000 + (end.tv_usec - start.tv_usec) / 1000);
     }
@@ -87,33 +81,37 @@ class RazorAHRS
     _input_buf;
     size_t _input_pos;
     
-    int _connect_timeout_dims;
+    int _connect_timeout_ms;
     int _serial_port;
 
     // callbacks    
     DataCallbackFunc data;
     ErrorCallbackFunc error;
 
-    /* *********************************
-     *
-     * 
-     *         threading stuff 
-     *
-     * 
-     * *********************************/
+    /* threading stuff */
     pthread_t _thread_id;
     void* _thread(void*);  // thread main function
     volatile bool _stop_thread; // thred stop flag
 
     // start the tracking thread
-    void _start_io_thread();
-
+    void _start_io_thread()
+    {
+      // create thread
+      pthread_create(&_thread_id , NULL, _thread_starter, this);
+    }
+  
     // stop the tracking thread
-    void _stop_io_thread();
+    void _stop_io_thread()
+    {
+      void *thread_exit_status; // dummy
+      _stop_thread = true;
+      pthread_join(_thread_id , &thread_exit_status);
+    }
 
-    static void* _thread_starter(void *arg);
-
-    
+    static void* _thread_starter(void *arg)
+    {
+      return reinterpret_cast<RazorAHRS*> (arg)->_thread(NULL);
+    }
     
     std::string to_str(int i)
     {

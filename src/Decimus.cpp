@@ -1,14 +1,11 @@
 /******************************************************************************************
-  
-  
+    
     decimius class is implemented with methods for saving data from
-    accelerometer, magnetometer and gyroscope as well as euler angles 
-    in cvs files. 
-    Additionally, using the armadillo libarry, the decimus class has 
-    methods for the time delay embedding and PCA for the state space 
-    representation.
-    decimius class is based on IMU razor-9dof class [1].
-        
+    accelerometer, magnetometer and gyroscope sensors as well as 
+    euler angles in cvs files. 
+    Using the armadillo libarry, the decimus class has methods for 
+    time delay embedding and PCA algorithms.
+    decimius class is based on IMU razor-9dof class [1].      
     
     References
     ----------
@@ -23,20 +20,13 @@
     Infos, updates, bug reports, contributions and feedback:
     https://github.com/mxochicale/decimus
     
-    
 ******************************************************************************************/
-
-
 
 #include "Decimus.h"
 
 Decimus::Decimus()
 {
   _dtsample=0; // Initialize the discrete time sample 
-  
-//   _length_window_frame=50; // timedelay embedding dimension  m>1
- 
-  
 }
 
 Decimus::~Decimus()
@@ -44,32 +34,28 @@ Decimus::~Decimus()
   Decimus::_experimentaldatafile.close();	
 }
 
-
-void 
-Decimus::Set_SpaceReconstructionParameters (int lengthwindowframe, int dim, int tau )
+void Decimus::Set_SpaceReconstructionParameters (int lengthwindowframe, int dim, int tau )
 {
     
-    _dataanalysis_flag = true;
-    
+    _dataanalysis_flag = true;    
     _length_window_frame= lengthwindowframe; 
     _dim = dim; // embedding dimension: m
     _tau = tau; // time delay: T
 
     _push_back_Matrix.zeros(_length_window_frame,3); // (rows,columns) 
-
     _push_back_PCAScores.empty();
-
     _push_back_Eigenvalues.empty();
     
  // SAVE PCA and EIGENVALS in CVS files   
     
-_PCANameFile << "Accumulated_PCA_Scores__FrameLenght=" << _length_window_frame << "_dim=" << _dim << "_tau=" << _tau << ".csv";
-_EigenvaluesNameFile << "Accumulated_Eigenvalues__FrameLenght=" << _length_window_frame << "_dim=" << _dim << "_tau=" << _tau << ".csv";
-// myString.str();
+    _PCANameFile << "Accumulated_PCA_Scores__FrameLenght=" << _length_window_frame 
+		 << "_dim=" << _dim << "_tau=" << _tau << ".csv";
+
+    _EigenvaluesNameFile << "Accumulated_Eigenvalues__FrameLenght=" << _length_window_frame 
+			 << "_dim=" << _dim << "_tau=" << _tau << ".csv";
 
 //     cout << "lenght" << _length_window_frame << "dim" << _dim << "T" << _tau << endl;   
 }
-
 
 string Decimus::_get_localdatetime ( void )
 {
@@ -78,25 +64,35 @@ string Decimus::_get_localdatetime ( void )
     the_date[0] = '\0';
     if (now != -1)
     {
-//       strftime(the_date, 18, "-%d%m%Y-%H%M%S", gmtime(&now)); // Coordinated Universal Time (UTC )or its related successors to Greenwich Mean Time 
+      // strftime(the_date, 18, "-%d%m%Y-%H%M%S", gmtime(&now)); // Coordinated Universal Time 
+                                                                 // (UTC ) or its related successors 
+                                                                 // to Greenwich Mean Time 
       strftime(the_date, sizeof(the_date), "%d%m%Y-%H%M%S", localtime(&now)); // local time
     }
 
     return std::string(the_date);
 }
 
-
 string Decimus::_getCurrentDirectory()
 {
-  char resolved_path[199];
-  //realpath("../../", resolved_path);
-  realpath("../", resolved_path);
-  // cout << resolved_path << endl;
-  string path = resolved_path;
+//   char resolved_path[199];
+//   //realpath("../../", resolved_path);
+//   realpath("../", resolved_path);
+//   // cout << resolved_path << endl;
+//   string path = resolved_path;
 
+  
+//   If resolved_path is specified as NULL, then realpath() uses malloc(3) 
+//   to allocate a buffer of up to PATH_MAX bytes to hold the resolved pathname, 
+//   and returns a pointer to this buffer. The caller should deallocate this 
+//   buffer using free(3).buffer using free(3).
+  char *real_path = realpath("../", NULL);
+  //cout << real_path << endl;
+  string path = real_path;
+  free(real_path); 
+  
   return path;
 }
-
 
 std::vector< long int > Decimus::_timelabel()
 {
@@ -106,167 +102,129 @@ std::vector< long int > Decimus::_timelabel()
   ptime current_date_milliseconds(current_date_microseconds.date(), current_time_milliseconds);
   
   //To convert hours minutes to seconds
-  time_duration timeinseconds(current_time_milliseconds.hours(),current_time_milliseconds.minutes(),current_time_milliseconds.seconds(),0);
+  time_duration timeinseconds(current_time_milliseconds.hours(),
+			      current_time_milliseconds.minutes(),
+			      current_time_milliseconds.seconds(),0);
   // cout << "(h:m:s)time in seconds " << timeinseconds.total_seconds()  << endl;
   
   vector<long> msms;
-  //msms.push_back(current_time_milliseconds.minutes());
     msms.push_back(timeinseconds.total_seconds());
     msms.push_back(current_time_milliseconds.fractional_seconds());
     
   return msms;
-  
 }
 
-void Decimus::_mkdirNAME ( string directoryName )
-{
 
- 
-//   string dN = (Decimus::_getCurrentDirectory()+"/"+directoryName+"/"+ _path_username  +"/"); // directoryName
-//   cout << "path: "<< dN << endl;
-// //   string dN = (Decimus::_getCurrentDirectory()+"/" + "cd" + "/" + directoryName + "/"); // directoryName
-//   int create_a_directory;
-//   create_a_directory = mkdir( ( (dN).c_str() ),  S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
-  
+void Decimus::_mkdirNAME ()
+{
+  //  boost::filesystem::path dir(dir_path);
+  //  boost::filesystem::path dir(Decimus::_getCurrentDirectory()+"/"+"ho/");
+  //  boost::filesystem::create_directory(Decimus::_getCurrentDirectory()+"/"+"ho/");
+
+  string directoryName = "data";
   string dN = (Decimus::_getCurrentDirectory()+"/"+directoryName +"/"); // directoryName
-   cout << "path: "<< dN << endl;
-//   string dN = (Decimus::_getCurrentDirectory()+"/" + "cd" + "/" + directoryName + "/"); // directoryName
   int create_a_directory;
   create_a_directory = mkdir( ( (dN).c_str() ),  S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
   
-  
   string userpath = (dN + _path_username + "/");
-//   cout << "userpath: "<< userpath << endl;
   
   int create_a_user_directory;
   create_a_user_directory = mkdir( ( (userpath).c_str() ),  S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
   
+    
+  Decimus::_experimentaldatafile.open( ( (userpath+_sensornumber+"_"+ 
+					  Decimus::_get_localdatetime() +
+					  ".csv").c_str()  ) , ios::out ); // create a csv file
   
-   
-  
-  Decimus::_experimentaldatafile.open( ( (userpath+_sensornumber+"_"+Decimus::_get_localdatetime() +".csv").c_str()  ) , ios::out );   // create a csv file
-  
-  
+  // write the header tags to the csv file    
   if (_dimode == 0) {
-          Decimus::_experimentaldatafile << "Sample, Time, YAW, PITCH, ROLL" << endl; // write the header tags to the csv file
+          Decimus::_experimentaldatafile << "Sample, Time, YAW, PITCH, ROLL" << endl;
   }
   else if (_dimode == 1) {
-      Decimus::_experimentaldatafile << "Sample, Time, ACCX_RAW, ACCY_RAW, ACCZ_RAW, MAGX_RAW, MAGY_RAW, MAGZ_RAW, GYRX_RAW, GYRY_RAW, GYRZ_RAW" << endl; // write the header tags to the csv file    
+      Decimus::_experimentaldatafile 
+	<< "Sample, Time, ACCX_RAW, ACCY_RAW, ACCZ_RAW, MAGX_RAW, MAGY_RAW, MAGZ_RAW, GYRX_RAW, GYRY_RAW, GYRZ_RAW" << endl; 
   }
   else {
-      Decimus::_experimentaldatafile << "Sample, Time, ACCX, ACCY, ACCZ, MAGX, MAGY, MAGZ, GYRX, GYRY, GYRZ" << endl; // write the header tags to the csv file
-  }
+      Decimus::_experimentaldatafile << "Sample, Time, ACCX, ACCY, ACCZ, MAGX, MAGY, MAGZ, GYRX, GYRY, GYRZ" << endl; 
+  }  
+}
+
+
+void Decimus::printACCMAGGYR ( float ACCX, float ACCY, float ACCZ, 
+			       float MAGX, float MAGY, float MAGZ, 
+			       float GYRX, float GYRY, float GYRZ )
+{
+  _ACCX=ACCX;
+  _ACCY=ACCY;
+  _ACCZ=ACCZ;  
+  _MAGX=MAGX;
+  _MAGY=MAGY;
+  _MAGZ=MAGZ;
+  _GYRX=GYRX;
+  _GYRY=GYRY;
+  _GYRZ=GYRZ;
    
+ cout << "  sample " << _dtsample << fixed << setprecision(3)
+ << "   ACC = " << setw(6) << _ACCX << ", " << setw(6) << _ACCY << ", " << setw(6) << _ACCZ
+ << "   MAG = " << setw(7) << _MAGX << ", " << setw(7) << _MAGY << ", " << setw(7) << _MAGZ
+ << "   GYR = " << setw(7) << _GYRX << ", " << setw(7) << _GYRY << ", " << setw(7) << _GYRZ << endl;
+  
+ _dtsample++; // increment the data sample value
+
+}
+
+
+void Decimus::writeACCMAGGYR ( float ACCX, float ACCY, float ACCZ, 
+			       float MAGX, float MAGY, float MAGZ, 
+			       float GYRX, float GYRY, float GYRZ )
+{
+  _ACCX=ACCX; 
+  _ACCY=ACCY; 
+  _ACCZ=ACCZ;  
+  _MAGX=MAGX; 
+  _MAGY=MAGY; 
+  _MAGZ=MAGZ;
+  _GYRX=GYRX; 
+  _GYRY=GYRY; 
+  _GYRZ=GYRZ;
+  
+  if (_dtsample == 0)
+  {
+    Decimus::_mkdirNAME ();
+  }
+    
+  Decimus::_experimentaldatafile << fixed << setprecision(3) 
+  <<  _dtsample << ","  <<  _timelabel()[0] << "." << _timelabel()[1] 
+  << "," << _ACCX << "," << _ACCY << "," << _ACCZ   
+  << "," << _MAGX << "," << _MAGY << "," << _MAGZ   
+  << "," << _GYRX << "," << _GYRY << "," << _GYRZ //  repetition of the GYRY
+  <<  std::endl;
+  
+  // Using 50 as the sample rate, we set the following modulus to 
+  // monitor data recording
+  //  if ( Decimus::mod(_dtsample,50) == 49)
+  //  {
+  //    cout <<  (_dtsample+1)/50 << " s" << endl;
+  //  }
+
+  cout << _dtsample << endl;
+
+  // FILE SAMPLE
+  //
+  // Sample, Time, ACCX, ACCY, ACCZ, MAGX, MAGY, MAGZ, GYRX, GYRY, GYRZ
+  // 0,85439.939000,2.203,249.831,25.798,336.730,259.320,-5.656,-0.830,-1.620,-1.620
+  // 1,85439.960000,2.203,250.713,25.798,338.624,260.319,-3.659,-0.830,-2.620,-2.620
+  // 2,85439.979000,1.322,248.069,22.822,337.668,256.541,-0.763,-0.830,-3.620,-3.620
+   
+  _dtsample++;
 }
 
 
 
-void 
-Decimus::writedataYAWPITCHROLL ( float YAW, float PITCH, float ROLL )
-{
-  _YAW=YAW;
-  _PITCH=PITCH;
-  _ROLL=ROLL;
-  
-  if (_dtsample == 0)
-  {
-//     cout << "createfile" << endl;
-//     Decimus::_mkdirNAME ("captured_data");
-    Decimus::_mkdirNAME ("data");
-  }
-  
-  
-  cout << "  sample " << _dtsample << fixed << setprecision(3)
-  << "    Yaw = " << setw(6) << _YAW << "      Pitch = " << setw(6) << _PITCH << "      Roll = " << setw(6) << _ROLL << endl;
 
-  
-  //IF THE DATA ANALYSIS FLAG IS TRUE SAVE PCASCORES EIGENVALS AND MAGVALS 
-  //IF THE FLAG IS FALSE THEN JUST SAVE THE YAWPITCHROLL DATA
-     
-     if (_dataanalysis_flag == true)
-     {
-//        cout << _dataanalysis_flag << endl;      
-       ////////////////////////////////////////////////////////////////////////////////////////
-     Decimus::_push_back( _YAW , _PITCH , _ROLL );
-
-  if ( Decimus::mod(_dtsample,_length_window_frame) == _length_window_frame-1)
-    {   
-      
-   cout << "push_back_Matrix \n" << _push_back_Matrix << endl;
-   //_magnitude method only  use the PITCH angle
-   cout << "Magnitude vector  ...  window_frame:[" << _length_window_frame << "] \n" <<  Decimus::_magnitude(_push_back_Matrix)  << endl;
-   
-  _magnitude_vector.save("Last_MagnitudeVector.csv",csv_ascii); // save magnitude vector
-   
-
-      cout << "Standard Embedded Matrix  (dim=" << _dim << ", tau="<< _tau << ")  ... " << "[" << _M << "x" << _dim << "] \n"
-	<<  Decimus::TimeDelayEmbedding(_magnitude_vector,_dim,_tau)  << endl; //   return _EmbeddedMatrix; 
-   
-   //Principal Component Analysis of the Embedded Time Delay Matrix
-   Decimus::_EmbeddedMatrix_PCA(_EmbeddedMatrix); // return _PCAScores;; 
-   
-   
-   _push_back_PCAScores = join_cols( _push_back_PCAScores , _PCAScores);
-   _push_back_PCAScores.save(_PCANameFile.str(),csv_ascii); // save PCA Scores
-   
-   _push_back_Eigenvalues = join_cols(_push_back_Eigenvalues, _Eigenvalues);
-   _push_back_Eigenvalues.save(_EigenvaluesNameFile.str(),csv_ascii); // save Eigenvalues
-   
-    }  
-    
-    }
-  //IF THE FLAG IS FALSE THEN JUST SAVE THE YAWPITCHROLL DATA
-
-  
-    
-    
-  
-    //Save the data on the datarecorded directory
-  Decimus::_experimentaldatafile << fixed << setprecision(3) 
-  <<  _dtsample << ","  <<  _timelabel()[0] << "." << _timelabel()[1] 
-  << "," << _YAW << "," << _PITCH << "," << _ROLL
-  <<  std::endl;
-  
-    // // Data Recorded OUTPUT
-    //   Sample, Time, YAW, PITCH, ROLL
-    // 0,74459.805000,-116.745,-1.407,0.716
-    // 1,74459.823000,-116.762,-1.407,0.722
-    // 2,74459.841000,-116.765,-1.413,0.732
-    // 3,74459.869000,-116.797,-1.427,0.721
-
-      _dtsample++; // increment the data sample value
-    
-}// end of writedataYAWPITCHROLL 
-
-
-
-// void Decimus::_push_back ( float X, float Y, float Z )
-// {
-// 
-//   rowvec rowvector;
-//   
-//   if ( Decimus::mod(_dtsample,_length_window_frame) == 0) // equal to zero
-//   {
-//     _push_back_Matrix.clear(); //_mACC.zeros(m,3); // (rows,columns) 
-//     rowvector << X << Y << Z;
-//     _push_back_Matrix.insert_rows(Decimus::mod(_dtsample,_length_window_frame), rowvector);
-//   }
-//  else // different from 0 and m-1
-//  {
-//     rowvector << X << Y << Z;
-//     _push_back_Matrix.insert_rows(Decimus::mod(_dtsample,_length_window_frame), rowvector);
-//  }
-//   
-// }
-// // void Decimus::_push_back_Matrix(float X, float Y, float Z, )
-
-
-
-
-
-
-void 
-Decimus::writedataACCMAGGYR ( float ACCX, float ACCY, float ACCZ, float MAGX, float MAGY, float MAGZ, float GYRX, float GYRY, float GYRZ )
+void Decimus::writedataACCMAGGYR ( float ACCX, float ACCY, float ACCZ, 
+				   float MAGX, float MAGY, float MAGZ, 
+				   float GYRX, float GYRY, float GYRZ )
 {
   _ACCX=ACCX;
   _ACCY=ACCY;
@@ -280,67 +238,53 @@ Decimus::writedataACCMAGGYR ( float ACCX, float ACCY, float ACCZ, float MAGX, fl
   
   if (_dtsample == 0)
   {
-//     cout << "createfile" << endl;
-
-//   Decimus::_experimentaldatafile.open( ( ("d.csv").c_str()  ) , ios::out );   // create a csv file
-
-//     Decimus::_mkdirNAME ("captured_data");
-    Decimus::_mkdirNAME ("data");
-    
+    Decimus::_mkdirNAME ();
   }
-  
-  
+    
   //IF THE DATA ANALYSIS FLAG IS TRUE SAVE PCASCORES EIGENVALS AND MAGVALS 
   //IF THE FLAG IS FALSE THEN JUST SAVE THE YAWPITCHROLL DATA
-     
-     if (_dataanalysis_flag == true)
+  
+if (_dataanalysis_flag == true)
      {  
-
-   Decimus::_push_back( _ACCX , _ACCY , _ACCZ );
-//    Decimus::_push_back( _MAGX , _MAGY , _MAGZ );  
-//    Decimus::_push_back( _GYRX , _GYRY , _GYRZ );
+       Decimus::_push_back( _ACCX , _ACCY , _ACCZ );
+       //Decimus::_push_back( _MAGX , _MAGY , _MAGZ );  
+       //Decimus::_push_back( _GYRX , _GYRY , _GYRZ );
    
   if ( Decimus::mod(_dtsample,_length_window_frame) == _length_window_frame-1)
     {   
-      
-   cout << "push_back_Matrix \n" << _push_back_Matrix << endl;
-   cout << "Magnitude vector  ...  window_frame:[" << _length_window_frame << "] \n" <<  Decimus::_magnitude(_push_back_Matrix)  << endl;
-  _magnitude_vector.save("Last_MagnitudeVector.csv",csv_ascii); // save magnitude vector
-   
-   cout << "Standard Embedded Matrix  (dim=" << _dim << ", tau="<< _tau << ")  ... " << "[" << _M << "x" << _dim << "] \n"
-	<<  Decimus::TimeDelayEmbedding(_magnitude_vector,_dim,_tau)  << endl; //   return _EmbeddedMatrix; 
-   
-   //Principal Component Analysis of the Embedded Time Delay Matrix
-   Decimus::_EmbeddedMatrix_PCA(_EmbeddedMatrix); // return _PCAScores;; 
+      cout << "push_back_Matrix \n" << _push_back_Matrix << endl;
+      cout << "Magnitude vector  ...  window_frame:[" << _length_window_frame 
+	   << "] \n" <<  Decimus::_magnitude(_push_back_Matrix)  << endl;
 
+      _magnitude_vector.save("Last_MagnitudeVector.csv",csv_ascii); // save magnitude vector
    
-//    _push_back_PCAScores = join_cols( _push_back_PCAScores , _PCAScores);
-//    _push_back_PCAScores.save("Accumulated_PCAScores.csv",csv_ascii); // save PCA Scores   
-//    
+      cout << "Standard Embedded Matrix  (dim=" << _dim << ", tau="<< _tau 
+	   << ")  ... " << "[" << _M << "x" << _dim << "] \n"
+	   <<  Decimus::TimeDelayEmbedding(_magnitude_vector,_dim,_tau)  
+	   << endl; //   return _EmbeddedMatrix; 
+   
+      //Principal Component Analysis of the Embedded Time Delay Matrix
+      Decimus::_EmbeddedMatrix_PCA(_EmbeddedMatrix); // return _PCAScores;; 
+
+      //    _push_back_PCAScores = join_cols( _push_back_PCAScores , _PCAScores);
+      //    _push_back_PCAScores.save("Accumulated_PCAScores.csv",csv_ascii); // save PCA Scores   
    
       
-   _push_back_PCAScores = join_cols( _push_back_PCAScores , _PCAScores);
-   _push_back_PCAScores.save(_PCANameFile.str(),csv_ascii); // save PCA Scores
+      _push_back_PCAScores = join_cols( _push_back_PCAScores , _PCAScores);
+      _push_back_PCAScores.save(_PCANameFile.str(),csv_ascii); // save PCA Scores
    
-   _push_back_Eigenvalues = join_cols(_push_back_Eigenvalues, _Eigenvalues);
-   _push_back_Eigenvalues.save(_EigenvaluesNameFile.str(),csv_ascii); // save Eigenvalues
-   
-     
+      _push_back_Eigenvalues = join_cols(_push_back_Eigenvalues, _Eigenvalues);
+      _push_back_Eigenvalues.save(_EigenvaluesNameFile.str(),csv_ascii); // save Eigenvalues
     }  
-    
-       }
-  //IF THE FLAG IS FALSE THEN JUST SAVE THE YAWPITCHROLL DATA
+    }//IF THE FLAG IS FALSE THEN JUST SAVE THE YAWPITCHROLL DATA
 
   
     
-    //printed values
-   cout << "  sample " << _dtsample << fixed << setprecision(3)
-   << "   ACC = " << setw(6) << _ACCX << ", " << setw(6) << _ACCY << ", " << setw(6) << _ACCZ
-   << "   MAG = " << setw(7) << _MAGX << ", " << setw(7) << _MAGY << ", " << setw(7) << _MAGZ
-   << "   GYR = " << setw(7) << _GYRX << ", " << setw(7) << _GYRY << ", " << setw(7) << _GYRZ << endl;
-
-  
-  
+   //printed values
+ cout << "  sample " << _dtsample << fixed << setprecision(3)
+ << "   ACC = " << setw(6) << _ACCX << ", " << setw(6) << _ACCY << ", " << setw(6) << _ACCZ
+ << "   MAG = " << setw(7) << _MAGX << ", " << setw(7) << _MAGY << ", " << setw(7) << _MAGZ
+ << "   GYR = " << setw(7) << _GYRX << ", " << setw(7) << _GYRY << ", " << setw(7) << _GYRZ << endl;
   
   //Save the data on the datarecorded directory
   Decimus::_experimentaldatafile << fixed << setprecision(3) 
@@ -360,9 +304,6 @@ Decimus::writedataACCMAGGYR ( float ACCX, float ACCY, float ACCZ, float MAGX, fl
       _dtsample++; // increment the data sample value
 
 }
-
-
-
 
 
 
@@ -453,7 +394,6 @@ void Decimus::_push_back ( float X, float Y, float Z )
 // void Decimus::_push_back_Matrix(float X, float Y, float Z, )
 
 
-
 int Decimus::mod (int a, int b)
 {
    if(b < 0) //you can check for b == 0 separately and do what you want
@@ -511,11 +451,7 @@ mat eigvec_original, eigvec, transformedData;
   cout << "DIY:eigenvalues \n" << eigval << endl;
   cout << "DIY:eigenvectors \n" << eigvec << endl;
   cout << "DIY:transformedData \n" << transformedData << endl;
-  
-  
-  
-  
-  
+    
   
   
   
@@ -600,23 +536,9 @@ return _PCAScores;; //  return PCAScore or R_PCA$x
 void Decimus::SensorDataType ( Decimus::Mode mode )
 {
    _dimode = mode;
-//   cout << "data input mode decimus" << _dimode << endl;
+   //cout << "data input mode decimus " << _dimode << endl;
 }
 
-
-
-
-
-
-
-void Decimus::testingzone()
-{
-  cout << endl;
-  cout << "  ***********************************     "  << endl;
-  cout << "    Local Date and Time: " << Decimus::_get_localdatetime() << endl;
-  cout << "\n \n \n" ;
-  cout << "  " << "***********************************     "  << endl;  
-}
 
 
 
@@ -635,6 +557,32 @@ string Decimus::userpathname(char* name)
 //   cout << "heyname" << _path_username << endl;
  return _path_username;
 }
+
+
+
+
+
+
+void Decimus::testingzone()
+{
+  /**
+   * Comment/Uncomment the following section for testing printable methods
+   * 
+   * 
+   */
+//   cout << endl;
+//   cout << "  ***********************************     "  << endl;
+//   cout << "    Local Date and Time: " << Decimus::_get_localdatetime() << endl;
+//   cout << "    Get Current Directory " <<  Decimus::_getCurrentDirectory() << endl;
+
+//   cout << "\n \n \n" ;
+//   cout << "  " << "***********************************     "  << endl;  
+
+     // // When using _mkdirNAME twice does not create the file to save data
+//   Decimus::_mkdirNAME ("data");
+}
+
+
 
 
 
