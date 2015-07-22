@@ -134,7 +134,7 @@ print(plotgyr)
 
 
 #plot_timeseries_imus(filename_imu0_[i],window,pattern_number)
-plot_timeseries_imus(filename_imu0_3,window,pattern_number)
+plot_timeseries_imus(filename_imu0_1,window,pattern_number)
 
 
 #back to R sourcecode path

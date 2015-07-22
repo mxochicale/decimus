@@ -161,6 +161,18 @@ Or wget::
 
    $ cd decimus-master
 
+
+8.1 Multiple Sensors
+=====================
+
+Expect is useful for running any program which requires interaction between the program and the user.
+In Ubuntu multixterm included in expect package. Install expect in Ubuntu:
+
+$sudo aptitude install expect
+
+
+
+
 	
 
 
