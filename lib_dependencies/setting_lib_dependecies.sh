@@ -1,10 +1,10 @@
 #!/bin/bash
 #
-#  Miguel P. Xochicale
-#  Script for downloand, untar and install armadillo and boost libraries
+#  Miguel Perez-Xochicale
+#  Script for download, untar and install armadillo and boost libraries
 #  
 #  Thu Jun 11 15:03:42 BST 2015
-# chmod +x <filename>.sh
+#  chmod +x <filename>.sh
 
 
 echo "-------------------------------"

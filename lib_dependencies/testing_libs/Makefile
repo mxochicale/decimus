@@ -1,6 +1,7 @@
 fileinfo := Makefile for testing libraries
-author := Miguel P. Xochicale
+author := Miguel Perez-Xochicale
 version := 001 
+
 #TODO := concatenate the current directory with the armadillo path 
 #     ./boostregex: error while loading shared libraries: libboost_regex.so.1.58.0: cannot open shared object file: No such file or directory
 #current_dir = $(shell pwd)
