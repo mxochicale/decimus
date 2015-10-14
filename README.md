@@ -10,10 +10,8 @@ Infos, updates, bug reports, contributions and feedback: https://github.com/mxoc
 
 CopyLeft (C) October 2015
 
-> *Miguel Perez-Xochicale* <perez.xochicale AT gmail.com>
-
-> Doctoral Researcher in Human-Robot Interaction
-
+> *Miguel Perez-Xochicale* <perez.xochicale AT gmail.com>,
+> Doctoral Researcher in Human-Robot Interaction,
 > University of Birmigham, U.K. (2014-2017)
 
 
