@@ -9,9 +9,10 @@ PCA algorithms using [armadillo C++ linear algebra library](http://arma.sourcefo
 Infos, updates, bug reports, contributions and feedback: https://github.com/mxochicale/decimus
 
 CopyLeft (C) October 2015
-Miguel Perez-Xochicale <perez.xochicale AT gmail.com>
-Doctoral Researcher in Human-Robot Interaction
-University of Birmigham, U.K. (2014-2017)
+
+> Miguel Perez-Xochicale <perez.xochicale AT gmail.com>
+> Doctoral Researcher in Human-Robot Interaction
+> University of Birmigham, U.K. (2014-2017)
 
 
 2. decimus repository 
