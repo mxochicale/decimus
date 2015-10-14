@@ -14,7 +14,7 @@ library(lattice) ##xyplot
 rawdata <- NULL;
 data <- NULL;
 
-directory_name <- "human44"
+directory_name <- "human"
 pattern_number <- ""
 star <- 0
 end <- 10000
@@ -26,15 +26,17 @@ setwd(paste(getwd(),"/data/",directory_name,"/",sep=""))  ; # set and get the cu
 files <-list.files(pattern = "\\.csv")
 
 
-filename_imu0_1 <- files[1]
-filename_imu0_2 <- files[2]
-filename_imu0_3 <- files[3]
-filename_imu0_4 <- files[4]
-filename_imu0_5 <- files[5]
-filename_imu0_6 <- files[6]
-filename_imu0_7 <- files[7]
-filename_imu0_8 <- files[8]
-filename_imu0_9 <- files[9]
+
+filename_imu0_0 <- files[1]
+filename_imu0_1 <- files[2]
+filename_imu0_2 <- files[3]
+filename_imu0_3 <- files[4]
+filename_imu0_4 <- files[5]
+filename_imu0_5 <- files[6]
+filename_imu0_6 <- files[7]
+filename_imu0_7 <- files[8]
+filename_imu0_8 <- files[9]
+filename_imu0_9 <- files[10]
 #filename_imu0_ <- files[]
 
 
@@ -133,8 +135,10 @@ print(plotgyr)
 }
 
 
+
 #plot_timeseries_imus(filename_imu0_[i],window,pattern_number)
-plot_timeseries_imus(filename_imu0_1,window,pattern_number)
+plot_timeseries_imus(filename_imu0_0,window,pattern_number)
+
 
 
 #back to R sourcecode path

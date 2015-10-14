@@ -1,12 +1,11 @@
 /******************************************************************************************
     
-    decimius class is implemented with methods for saving data from
+    decimius class has methods for saving data from
     accelerometer, magnetometer and gyroscope sensors as well as 
-    euler angles in cvs files. 
-    Using the armadillo libarry, the decimus class has methods for 
-    time delay embedding and PCA algorithms.
-    decimius class is based on IMU razor-9dof class [1].      
-    
+    euler angles in cvs files from the IMU razor-9dof [1].      
+    Additionally, decimus class has methods for the time delay embedding 
+    and PCA algorithms.
+  
     References
     ----------
     [1] IMU razor-9dof application
@@ -14,13 +13,14 @@
     
     License
     -------
-    CopyLeft (C) 2014 Miguel P. Xochicae
+    CopyLeft (C) October 2015 Miguel Perez-Xochicae
     perez[dot]xochicale[at]gmail[dot]com
     
     Infos, updates, bug reports, contributions and feedback:
     https://github.com/mxochicale/decimus
     
 ******************************************************************************************/
+
 
 #ifndef DECIMUS_H
 #define DECIMUS_H
@@ -45,16 +45,10 @@
 #include<iostream>	// std::cout, std::endl
 using namespace std; 
 
-//#include "boost/filesystem.hpp" // create a directory
-//#include "boost/filesystem/path.hpp"
-//#include "boost/filesystem/operations.hpp"
-
 #include "boost/date_time/posix_time/posix_time.hpp" // -boost-get-current-time-in-milliseconds
 using namespace boost::posix_time;
 
-
-
-#include "armadillo"	// C++ linear algebra library 
+#include "armadillo" // C++ linear algebra library 
 using namespace arma;
 
 
@@ -65,14 +59,9 @@ public:
         Decimus();
         virtual ~Decimus();
 
+
   /**
-  * Write ACC,MAG and GYR data to a csv file
-  */
-  void writedataACCMAGGYR(float ACCX, float ACCY, float ACCZ, 
-			  float MAGX, float MAGY, float MAGZ, 
-			  float GYRX, float GYRY, float GYRZ);
-  /**
-  * Write ACC,MAG and GYR data to a csv file
+  * Print ACC,MAG and GYR data to the terminal
   */
   void printACCMAGGYR(float ACCX, float ACCY, float ACCZ, 
 		      float MAGX, float MAGY, float MAGZ, 
@@ -85,8 +74,11 @@ public:
 			  float MAGX, float MAGY, float MAGZ, 
 			  float GYRX, float GYRY, float GYRZ);
   
+  
+  void writeYAWPITCHROLL(float YAW, float PITCH, float ROLL);
 
-
+  
+  
   /**
   * print the current time with _get_localdatetime
   */
