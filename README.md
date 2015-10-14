@@ -85,6 +85,7 @@ Ping: 00:18:B2:03:77:7B from AC:xx:xx:xx:xx:xx (data size 44) ...
 $ sudo rfcomm connect 0 00:18:B2:03:77:7B
 Connected /dev/rfcomm0 to 00:18:B2:03:77:7B on channel 1
 Press CTRL-C for hangup
+```
 
 * Release the port
 ```
