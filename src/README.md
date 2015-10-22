@@ -5,8 +5,7 @@
 
 
 #NB. 
-.kdev4 and build directories have been deleted for the migration
-
+.kdev4 and build directories have to be deleted for migration purposes
 
 
 Miguel Perez-Xochicale 

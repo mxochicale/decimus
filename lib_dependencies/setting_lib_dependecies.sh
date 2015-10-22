@@ -1,10 +1,15 @@
-#!/bin/bash
+!/bin/bash
 #
 #  Miguel Perez-Xochicale
 #  Script for download, untar and install armadillo and boost libraries
 #  
 #  Thu Jun 11 15:03:42 BST 2015
 #  chmod +x <filename>.sh
+
+
+cd
+mkdir .lib_dependencies
+cd .lib_dependencies
 
 
 echo "-------------------------------"

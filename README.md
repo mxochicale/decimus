@@ -1,18 +1,18 @@
-
 1. Introduction
 ============================
 
 decimius class has methods for saving data from accelerometer, magnetometer and gyroscope sensors 
-as well as euler angles in cvs files from the [IMU razor-9dof](https://github.com/ptrbrtz/razor-9dof-ahrs). Additionally, decimus class has methods for time delay embedding theorem and 
-PCA algorithms using [armadillo C++ linear algebra library](http://arma.sourceforge.net/).
+as well as euler angles in cvs files from the [IMU razor-9dof](https://github.com/ptrbrtz/razor-9dof-ahrs). 
+Additionally, decimus class has methods for time delay embedding theorem and PCA algorithms using 
+[armadillo C++ linear algebra library](http://arma.sourceforge.net/).
 
-Infos, updates, bug reports, contributions and feedback: https://github.com/mxochicale/decimus
+Information, updates, bug reports, contributions and feedback: https://github.com/mxochicale/decimus
 
 CopyLeft (C) October 2015
 
-> *Miguel Perez-Xochicale* <perez.xochicale AT gmail.com>,
+> Miguel Perez-Xochicale <perez.xochicale AT gmail.com>,
 > Doctoral Researcher in Human-Robot Interaction,
-> University of Birmigham, U.K. (2014-2017)
+> University of Birmingham, U.K. (2014-2017)
 
 
 2. decimus repository 
@@ -22,30 +22,14 @@ decimus repository contains 4 directories
 
 lib_dependencies
 ---
-testing_libs directory contains several examples to test armadillo and boost libraries compilation,
+testing_libs directory contains several examples to test armadillo and boost libraries,
 it also contains a README.md file for library installation.
 
 src
 ---
 It contains the source code project files:
-main.cpp, Decimus.h, Decimus.cpp, RazorAHRS.h, RazorAHRS.cpp and Makefile.
-
-prior to compile the project, set library paths in the Makefile 
-
-```
-$make 
-```
-to clean 
-```
-$make clean
-```
-
-Prior to run the application, it is recommended that you test the IMU sensor by using 
-```
-sudo miniterm.py -d /dev/rfcomm0 -b 9600
-```
-
-to run you should pair the bluetooth module [Section 3].
+Make Project: main.cpp, Decimus.h, Decimus.cpp, RazorAHRS.h, RazorAHRS.cpp and Makefile.
+Kdevelop Project: CMakeList.txt, src-kproject.kdev4
 
 
 data
@@ -59,8 +43,14 @@ magnetometer and gyroscope data and euler angles.
 
 3. Pairing bluetooth 
 ============================
-
 It is recommended that you install blueman for pairing the bluetooh modules
+using bluetooth devices application
+
+```
+sudo apt-get update
+sudo apt-get install blueman
+```
+
 Example Usage
 --
 * Scan the nearby bluetooth connections 
@@ -90,7 +80,13 @@ Press CTRL-C for hangup
 
 * Release the port
 ```
-$ sudo rfcomm release 0
+$ sudo rfcomm release 0  00:18:B2:03:77:7B
+```
+
+
+* Prior to run the application, it is recommended that you test the IMU sensor by using 
+```
+sudo miniterm.py -d /dev/rfcomm0 -b 9600
 ```
 
 
@@ -140,8 +136,25 @@ https://myraspberryandme.wordpress.com/2013/11/20/bluetooth-serial-communication
 
 
 
-Download
----
+8.1 Multiple Sensors
+=====================
+
+Expect is useful for running any program which requires interaction between the program and the user.
+In Ubuntu multixterm included in expect package. Install expect in Ubuntu:
+
+```
+$sudo aptitude install expect
+```
+
+
+5. How to use it
+=====================
+
+
+
+
+4. Download
+=====================
 
 download the source with your preferred method and install manually.
 
@@ -159,20 +172,14 @@ Or wget::
    $ cd decimus-master
 ```
 
-8.1 Multiple Sensors
-=====================
 
-Expect is useful for running any program which requires interaction between the program and the user.
-In Ubuntu multixterm included in expect package. Install expect in Ubuntu:
 
-```
-$sudo aptitude install expect
-```
 
 
 9. TODO List
 =============
 
+* describe the how to use it section
 * Add instructions on how to compile the project using either kdevelop or makefile.
 * When the project is compiled with make, a directory is create in the main root of the source code,
   it is therefore suggested to modify (check this English grammar rule) the Makefile project to create

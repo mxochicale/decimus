@@ -11,7 +11,7 @@ CXX=g++
 ##
 # If you've installed Armadillo and boost's headers manually, 
 # you should need to tell the compiler where they are.
-LIB_DEP_PATH = /home/map479-admin/lib_dependencies
+LIB_DEP_PATH = ~/.lib_dependencies
 
 ARMA_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/armadillo-5.100.1/include
 BOOST_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/boost-1.58.0/include
@@ -29,6 +29,8 @@ OPT = -O2
 ## -O1: good trade-off between compilation time and execution speed
 ## -O2: produces programs which have almost all possible speedups, but compilation takes longer
 ## -O3: enables auto vectorisation when using gcc
+
+OUT = /out 
 
 
 CXXFLAGS = $(ARMA_INCLUDE_FLAG) $(FLAGS) $(BOOST_INCLUDE_FLAG) $(BOOST_LIB_FLAG) $(OPT)

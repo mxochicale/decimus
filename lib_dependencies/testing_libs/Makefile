@@ -2,8 +2,14 @@ fileinfo := Makefile for testing libraries
 author := Miguel Perez-Xochicale
 version := 001 
 
-#TODO := concatenate the current directory with the armadillo path 
+
+#TODO 
+# [*] make all boost project
+# [*] concatenate the current directory with the armadillo path 
+#
+# [*] fix the running error with the regex lib
 #     ./boostregex: error while loading shared libraries: libboost_regex.so.1.58.0: cannot open shared object file: No such file or directory
+
 #current_dir = $(shell pwd)
 #current_dir := $(notdir $(patsubst %/,%,$(dir $(mkfile_path))))i
 #CUR_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
@@ -13,7 +19,7 @@ CXX=g++
 ##
 # If you've installed Armadillo and boost's headers manually, 
 # you should need to tell the compiler where they are.
-LIB_DEP_PATH = /home/map479-admin/lib_dependencies
+LIB_DEP_PATH = ~/.lib_dependencies
 
 ARMA_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/armadillo-5.100.1/include
 BOOST_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/boost-1.58.0/include
@@ -51,6 +57,7 @@ OPT = -O2
 
 CXXFLAGS = $(ARMA_INCLUDE_FLAG) $(DEBUG) $(FINAL) $(OPT) $(EXTRA_OPT)
 
+
 all: main
 
 arma:	armadilloexample.cpp
@@ -75,13 +82,10 @@ boostregex:	boostregex.cpp
 
 .PHONY: clean
 
-armaclean: 
+clean:
 	rm -f arma A.txt *.*~ *~
-	@echo "Clean done"
-
-boostclean:
 	rm -f boostclock0 boostclock1 boostposix boostiterator boostregex *~
-	@echo "Clean done"
+	@echo "Clean done :)"
 
 
 help:
