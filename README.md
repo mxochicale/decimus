@@ -1,44 +1,45 @@
 1. Introduction
 ============================
 
-decimius class has methods for saving data from accelerometer, magnetometer and
-gyroscope sensors as well as euler angles in cvs files from the [IMU razor-9dof](https://github.com/ptrbrtz/razor-9dof-ahrs). Additionally, decimus class has methods for
-time delay embedding theorem and PCA algorithms using
+decimius is a C++ class which has methods to save data from
+[IMU razor-9dof](https://github.com/ptrbrtz/razor-9dof-ahrs).
+Additionally, decimus class has methods to run some linear algebra operations such as PCA using
 [armadillo C++ linear algebra library](http://arma.sourceforge.net/).
-
-Information, updates, bug reports, contributions and feedback:
-https://github.com/mxochicale/decimus
 
 > Miguel Xochicale <http://mxochicale.github.io>,  
 > Doctoral Researcher in Human-Robot Interaction,  
 > University of Birmingham, U.K. (2014-2017)  
 
-CopyLeft (C) April 2016
-
-
 2. decimus repository
 ============================
 
-2.1 lib_dependencies
+2.1 bluetooth
+---
+bluetooth contains useful information to configure the dongles, linux machine and some commands
+
+2.2 data
+---
+data contains a test directory which has data from the sensor in a cvs file.
+
+2.3 lib_dependencies
 ---
 testing_libs directory contains several examples to test armadillo
 and boost libraries. It also contains a README.md file for library installation.
-
-2.2 src
----
-src contains the source code project files:
-Make Project: main.cpp, Decimus.h, Decimus.cpp, RazorAHRS.h, RazorAHRS.cpp and Makefile.
-Kdevelop Project: CMakeList.txt, src-kproject.kdev4
-
-
-2.3 data
----
-data contains a test directory which has data from the sensor in a cvs file.
 
 2.4 r-code
 ---
 r-code contains R source code to read and plot the data from an csv file.
 
+2.5 razor_calibration
+---
+razor_calibration contains library dependencies, commands and previous calibration values
+for the razor sensor.
+
+2.6 src
+---
+src contains the source code project files:
+Make Project: main.cpp, Decimus.h, Decimus.cpp, RazorAHRS.h, RazorAHRS.cpp and Makefile.
+Kdevelop Project: CMakeList.txt, src-kproject.kdev4
 
 
 3. Download
@@ -110,21 +111,15 @@ baud rate (57600)
 ```
 
 
-
-5. TODO List
+5. TO DO List
 =============
 
-* describe the how to use it section
-* Add instructions on how to compile the project using either kdevelop or makefile.
 * When the project is compiled with make, a directory is create in the main root of the
-  source code, it is therefore suggested to modify (check this English grammar rule)
-  the Makefile project to create a build directory in src path.
-* ADD logbook file to the README file to report issues
+  source code, it is therefore suggested to modify.
+  (the Makefile project to create a build directory in src path.)
 * PARTIALLY DONE: Check the methods at decimus class that save the values for
   YAW_PITCH_ROLL, ACC_MAG_GYR_RAW, and ACC_MAG_GYR_CALIBRATED
-* PARTIALLY DONE: Edit README.md from lib_dependencies
-* PARTIALLY DONE: Check the R file comments and add another file for the euler angles
-
+* Check the R file comments and add another file for the euler angles
 * DIRECTORY DEVELOPMENT DESCRIPTION  Fri Feb 12 12:30:36 GMT 2016
 src_getonesample # project that use #f to get one sample  
 src_twosensors00 # project that can read two razor sensors  
