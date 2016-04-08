@@ -45,6 +45,7 @@ class RazorAHRS
 
     RazorAHRS(const std::string &port, DataCallbackFunc data_func, ErrorCallbackFunc error_func,
         Mode mode, int connect_timeout_ms = 5000, speed_t speed = B57600);
+    //B57600 to B9600
     ~RazorAHRS();
 
     //send #o0 to stop the streaming 

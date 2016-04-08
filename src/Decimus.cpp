@@ -114,42 +114,55 @@ void Decimus::_mkdirNAME ()
 					  Decimus::_get_localdatetime() +
 					  ".csv").c_str()  ) , ios::out ); // create a csv file
   
-  // write the header tags to the csv file    
-  if (_dimode == 0) {
-          Decimus::_experimentaldatafile << "Sample, Time, YAW, PITCH, ROLL" << endl;
-  }
-  else if (_dimode == 1) {
-      Decimus::_experimentaldatafile 
-	<< "Sample, Time, ACCX_RAW, ACCY_RAW, ACCZ_RAW, MAGX_RAW, MAGY_RAW, MAGZ_RAW, GYRX_RAW, GYRY_RAW, GYRZ_RAW" << endl; 
-  }
-  else {
-      Decimus::_experimentaldatafile << "Sample, Time, ACCX, ACCY, ACCZ, MAGX, MAGY, MAGZ, GYRX, GYRY, GYRZ" << endl; 
-  }  
-}
+//   // write the header tags to the csv file    
+//   if (_dimode == 0) {
+//           Decimus::_experimentaldatafile << "Sample, Time, YAW, PITCH, ROLL" << endl;
+//   }
+//   else if (_dimode == 1) {
+//       Decimus::_experimentaldatafile 
+// 	<< "Sample, Time, ACCX_RAW, ACCY_RAW, ACCZ_RAW, MAGX_RAW, MAGY_RAW, MAGZ_RAW, GYRX_RAW, GYRY_RAW, GYRZ_RAW" << endl; 
+//   }
+//   else {
+//       Decimus::_experimentaldatafile << "Sample, Time, ACCX, ACCY, ACCZ, MAGX, MAGY, MAGZ, GYRX, GYRY, GYRZ" << endl; 
+//   }  
 
-
-void Decimus::printACCMAGGYR ( float ACCX, float ACCY, float ACCZ, 
-			       float MAGX, float MAGY, float MAGZ, 
-			       float GYRX, float GYRY, float GYRZ )
-{
-  _ACCX=ACCX;
-  _ACCY=ACCY;
-  _ACCZ=ACCZ;  
-  _MAGX=MAGX;
-  _MAGY=MAGY;
-  _MAGZ=MAGZ;
-  _GYRX=GYRX;
-  _GYRY=GYRY;
-  _GYRZ=GYRZ;
-   
- cout << "  sample " << _dtsample << fixed << setprecision(3)
- << "   ACC = " << setw(6) << _ACCX << ", " << setw(6) << _ACCY << ", " << setw(6) << _ACCZ
- << "   MAG = " << setw(7) << _MAGX << ", " << setw(7) << _MAGY << ", " << setw(7) << _MAGZ
- << "   GYR = " << setw(7) << _GYRX << ", " << setw(7) << _GYRY << ", " << setw(7) << _GYRZ << endl;
+Decimus::_experimentaldatafile << "Sample, Time, ACCX, ACCY, ACCZ, MAGX, MAGY, MAGZ, GYRX, GYRY, GYRZ" << endl; 
   
- _dtsample++; // increment the data sample value
-
 }
+
+
+
+void Decimus::SensorDataType ( Decimus::Mode mode )
+{
+   _dimode = mode;
+   //cout << "data input mode decimus " << _dimode << endl;
+}
+
+
+
+
+string Decimus::sensor_number(string sensor_number)
+{
+  _sensornumber = sensor_number;
+  
+    Decimus::_mkdirNAME ();
+      
+  
+  return _sensornumber;
+}
+
+
+// char* Decimus::userpathname(char* name)
+string Decimus::userpathname(char* name)
+{
+  string strname = name;
+ _path_username = strname;
+//   cout << "heyname" << _path_username << endl;
+ return _path_username;
+}
+
+
+
 
 
 void Decimus::writeACCMAGGYR ( float ACCX, float ACCY, float ACCZ, 
@@ -166,11 +179,7 @@ void Decimus::writeACCMAGGYR ( float ACCX, float ACCY, float ACCZ,
   _GYRY=GYRY; 
   _GYRZ=GYRZ;
   
-  if (_dtsample == 0)
-  {
-    Decimus::_mkdirNAME ();
-  }
-    
+
   Decimus::_experimentaldatafile << fixed << setprecision(3) 
   <<  _dtsample << ","  <<  _timelabel()[0] << "." << _timelabel()[1] 
   << "," << _ACCX << "," << _ACCY << "," << _ACCZ   
@@ -185,7 +194,8 @@ void Decimus::writeACCMAGGYR ( float ACCX, float ACCY, float ACCZ,
   //    cout <<  (_dtsample+1)/50 << " s" << endl;
   //  }
 
-  cout << _dtsample << endl;
+   cout << "sample (n): " << _dtsample << endl;
+   
 
   // FILE SAMPLE
   //
@@ -214,16 +224,13 @@ void Decimus::writeYAWPITCHROLL(float YAW, float PITCH, float ROLL)
   <<  _dtsample << ","  <<  _timelabel()[0] << "." << _timelabel()[1] 
   << "," << _YAW << "," << _PITCH << "," << _ROLL
   <<  std::endl;
+
+//   cout << _dtsample << endl;
+
   
-  // Using 50 as the sample rate, we set the following modulus to 
-  // monitor data recording
-  //  if ( Decimus::mod(_dtsample,50) == 49)
-  //  {
-  //    cout <<  (_dtsample+1)/50 << " s" << endl;
-  //  }
-
-  cout << _dtsample << endl;
-
+   std::cout <<  _dtsample << "," <<  _timelabel()[0] << "." << _timelabel()[1] << ",  " 
+   << _YAW << "," << _PITCH << "," << _ROLL  <<  std::endl;
+   
   // FILE SAMPLE
   //
   // Sample, Time, YAW, PITCH, ROLL
@@ -234,6 +241,41 @@ void Decimus::writeYAWPITCHROLL(float YAW, float PITCH, float ROLL)
    
   _dtsample++;
 }
+
+
+
+
+
+
+void Decimus::printACCMAGGYR ( float ACCX, float ACCY, float ACCZ, 
+			       float MAGX, float MAGY, float MAGZ, 
+			       float GYRX, float GYRY, float GYRZ )
+{
+  _ACCX=ACCX;
+  _ACCY=ACCY;
+  _ACCZ=ACCZ;  
+  _MAGX=MAGX;
+  _MAGY=MAGY;
+  _MAGZ=MAGZ;
+  _GYRX=GYRX;
+  _GYRY=GYRY;
+  _GYRZ=GYRZ;
+   
+ cout << "  sample " << _dtsample << fixed << setprecision(3)
+ << "   ACC = " << setw(6) << _ACCX << ", " << setw(6) << _ACCY << ", " << setw(6) << _ACCZ
+ << "   MAG = " << setw(7) << _MAGX << ", " << setw(7) << _MAGY << ", " << setw(7) << _MAGZ
+ << "   GYR = " << setw(7) << _GYRX << ", " << setw(7) << _GYRY << ", " << setw(7) << _GYRZ << endl;
+  
+ _dtsample++; // increment the data sample value
+
+}
+
+
+
+
+
+
+
 
 
 
@@ -484,34 +526,6 @@ _PCAScores = transformedData;
 return _PCAScores;; //  return PCAScore or R_PCA$x
       
    
-}
-
-
-
-
-void Decimus::SensorDataType ( Decimus::Mode mode )
-{
-   _dimode = mode;
-   //cout << "data input mode decimus " << _dimode << endl;
-}
-
-
-
-
-string Decimus::sensor_number(string sensor_number)
-{
-  _sensornumber = sensor_number;
-  return _sensornumber;
-}
-
-
-// char* Decimus::userpathname(char* name)
-string Decimus::userpathname(char* name)
-{
-  string strname = name;
- _path_username = strname;
-//   cout << "heyname" << _path_username << endl;
- return _path_username;
 }
 
 

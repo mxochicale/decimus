@@ -88,6 +88,9 @@ RazorAHRS::RazorAHRS(const std::string &port, DataCallbackFunc data_func, ErrorC
 
 RazorAHRS::~RazorAHRS()
 {
+  
+  
+  
   // if thread was started, stop thread
   if (_thread_id) _stop_io_thread();
   close(_serial_port);

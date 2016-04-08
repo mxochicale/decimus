@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 1.8)
 
-set(PRJ_NAME src-kproject)
+set(PRJ_NAME kproject)
 project(${PRJ_NAME})
 
 include_directories(~/.lib_dependencies/armadillo-5.100.1/include)

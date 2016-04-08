@@ -1,10 +1,9 @@
-#
 # fileinfo := Makefile for decimus class
-# author := Miguel Perez-Xochicale
-# version := alpha00
-#
-# https://github.com/mxochicale/decimus
-# 	
+# author := Miguel Xochicale
+
+# TODO
+# * add line to create build directory [Wed Dec 16 15:50:04 GMT 2015]
+
 
 CXX=g++
 
@@ -45,6 +44,8 @@ main: main.cpp
 
 clean: 
 	rm -f main example *.*~ *~
+	rm -rf .kdev4
+	rm -rf build
 	@echo "Clean done"
 
 help:

@@ -13,7 +13,7 @@
     
     License
     -------
-    CopyLeft (C) October 2015 Miguel Perez-Xochicae
+    CopyLeft (C) October 2015 Miguel Xochicae
     perez[dot]xochicale[at]gmail[dot]com
     
     Infos, updates, bug reports, contributions and feedback:
@@ -34,9 +34,6 @@
     
 ******************************************************************************************/
 
-
-
-
 #include <iostream>   // cout()
 #include <iomanip>    // setprecision() etc.
 #include <stdexcept>  // runtime_error
@@ -48,12 +45,19 @@ using namespace std;
 
 
 // Set your serial port here!
-//const string serial_port_name = "/dev/ttyUSB0"; // a good guess on linux
-const string serial_port_name = "/dev/rfcomm0"; // bluetooth  serial port
-std::string sensorname = "imu0"; 		// Set imu tag name
 
-RazorAHRS *razor; 	//razor pointer Object
-Decimus DataAnalysis;  	//DataAnalysis Object
+const string serial_port_name_0 = "/dev/rfcomm0"; // bluetooth  serial port
+// const string serial_port_name_1 = "/dev/rfcomm1"; // bluetooth  serial port
+
+std::string sensorname_imu0 = "imu0"; 		// Set imu tag name
+// std::string sensorname_imu1 = "imu1"; 		// Set imu tag name
+
+RazorAHRS *razor_0; 	//razor pointer Object
+// RazorAHRS *razor_1; 	//razor pointer Object
+
+
+Decimus DataAnalysis_0;  	//DataAnalysis Object
+// Decimus DataAnalysis_1;  	//DataAnalysis Object
 
 
 // Razor error callback handler
@@ -70,21 +74,38 @@ void on_error(const string &msg)
 
 // Razor data callback handler will be called from (and in) Razor background thread!
 // 'data' depends on mode that was set when creating the RazorAHRS object. 
-void on_data(const float data[])
+void on_data_0(const float data[])
 {
 
-  DataAnalysis.writeYAWPITCHROLL(data[0] , data[1] , data[2]);
-//   DataAnalysis.writeACCMAGGYR(data[0] , data[1] , data[2], data[3] , data[4], data[5], data[6] ,data[7] , data[8] );
+//  DataAnalysis.writeYAWPITCHROLL(data[0] , data[1] , data[2]);
+    DataAnalysis_0.writeACCMAGGYR(data[0] , data[1] , data[2], data[3] , data[4], data[5], data[6] ,data[7] , data[8] );
 //   DataAnalysis.printACCMAGGYR(data[0] , data[1] , data[2], data[3] , data[4], data[5], data[6] ,data[7] , data[8] );
 }
 
 
+/*
+// Razor data callback handler will be called from (and in) Razor background thread!
+// 'data' depends on mode that was set when creating the RazorAHRS object. 
+void on_data_1(const float data[])
+{
+
+//  DataAnalysis.writeYAWPITCHROLL(data[0] , data[1] , data[2]);
+    DataAnalysis_1.writeACCMAGGYR(data[0] , data[1] , data[2], data[3] , data[4], data[5], data[6] ,data[7] , data[8] );
+//   DataAnalysis.printACCMAGGYR(data[0] , data[1] , data[2], data[3] , data[4], data[5], data[6] ,data[7] , data[8] );
+}*/
+
+
 int main(int argc, char *argv[])
 {
-    
-    DataAnalysis.userpathname(argv[1]);
-    DataAnalysis.sensor_number(sensorname);
 
+//######################################################
+    DataAnalysis_0.userpathname(argv[1]);
+    DataAnalysis_0.sensor_number(sensorname_imu0);
+//     DataAnalysis_1.userpathname(argv[1]);
+//     DataAnalysis_1.sensor_number(sensorname_imu1);
+//######################################################
+    
+    
     cout << endl;
     cout << endl;
     cout << "          88                       88                                           " << endl;
@@ -109,15 +130,17 @@ int main(int argc, char *argv[])
     cout << endl;
     cout << endl;
     getchar();  // wait RETURN
-     
-    RazorAHRS::Mode DataTypeMode = RazorAHRS::YAW_PITCH_ROLL;
-//     RazorAHRS::Mode DataTypeMode = RazorAHRS::ACC_MAG_GYR_CALIBRATED;
-//     RazorAHRS::Mode DataTypeMode = RazorAHRS::ACC_MAG_GYR_RAW;
-       
-    if (DataTypeMode == 0) {DataAnalysis.SensorDataType(Decimus::YAW_PITCH_ROLL);}
-    else if (DataTypeMode == 1) {DataAnalysis.SensorDataType(Decimus::ACC_MAG_GYR_RAW);}
-    else {DataAnalysis.SensorDataType(Decimus::ACC_MAG_GYR_CALIBRATED);}
-
+   
+    
+    
+// //    RazorAHRS::Mode DataTypeMode = RazorAHRS::YAW_PITCH_ROLL;
+//      RazorAHRS::Mode DataTypeMode = RazorAHRS::ACC_MAG_GYR_CALIBRATED;
+// //     RazorAHRS::Mode DataTypeMode = RazorAHRS::ACC_MAG_GYR_RAW;
+//        
+//     if (DataTypeMode == 0) {DataAnalysis.SensorDataType(Decimus::YAW_PITCH_ROLL);}
+//     else if (DataTypeMode == 1) {DataAnalysis.SensorDataType(Decimus::ACC_MAG_GYR_RAW);}
+//     else {DataAnalysis.SensorDataType(Decimus::ACC_MAG_GYR_CALIBRATED);}
+// 
 
   
   try
@@ -125,7 +148,14 @@ int main(int argc, char *argv[])
     // Create Razor AHRS object. Serial I/O will run in background thread and report
     // errors and data updates using the callbacks on_data() and on_error().
 
-    razor = new RazorAHRS(serial_port_name, on_data, on_error, DataTypeMode);
+    
+    
+//######################################################
+    razor_0 = new RazorAHRS(serial_port_name_0, on_data_0, on_error, RazorAHRS::ACC_MAG_GYR_CALIBRATED);
+//     razor_1 = new RazorAHRS(serial_port_name_1, on_data_1, on_error, RazorAHRS::ACC_MAG_GYR_CALIBRATED);
+//######################################################
+    
+    
 
     // NOTE: If these callback functions were members of a class and not global
     // functions, you would have to bind them before passing. Like this:
@@ -154,7 +184,12 @@ int main(int argc, char *argv[])
   }
   
   getchar();  // wait for RETURN key
-  razor -> disable_continuous_streaming_output();
-
+  
+//######################################################
+  razor_0 -> disable_continuous_streaming_output();
+//   razor_1 -> disable_continuous_streaming_output();
+//######################################################
+  
+  
   return 0;
 }

@@ -58,6 +58,20 @@ getdata<- function(filename_imuN)
 }
 
 
+get_ACCMAGGYRdata<- function(filename_imuN)
+{
+  
+  rawdata<-read.csv(paste(filename_imuN,"",sep=""), sep=',');
+  MD <- as.matrix(rawdata)# Matrix Data
+    
+  MD <- cbind (MD, sqrt(MD[,3]^2 + MD[,4]^2 + MD[,5]^2) ); # magnitude of ACC
+  MD <- cbind (MD, sqrt(MD[,6]^2 + MD[,7]^2 + MD[,8]^2) ); # magnitude of MAG
+  MD <- cbind (MD, sqrt(MD[,9]^2 + MD[,10]^2 + MD[,11]^2) ); # magnitude of GYR
+  
+  return(MD)
+  
+}
+
 
 
 rotated_angle <- function(eulerangle,threshold)
