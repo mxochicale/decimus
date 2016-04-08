@@ -1,8 +1,12 @@
 
-## Pairing Bluetooth Dongle
 
+Configure rfcomm as regular user
+============================
+```
+sudo chmod u+s /usr/bin/rfcomm
+```
 
-Pairing bluetooth 
+Pairing Bluetooth Dongle
 ============================
 It is recommended that you install blueman for pairing the bluetooh modules
 using bluetooth devices application
@@ -14,10 +18,10 @@ sudo apt-get install blueman
 
 Example Usage
 --
-* Scan the nearby bluetooth connections 
+* Scan the nearby bluetooth connections
 
 ```
-$ hcitool scan 
+$ hcitool scan
 Scanning ...
 00:18:B2:03:77:7B	Serial Port Device
 ```
@@ -45,17 +49,18 @@ $ sudo rfcomm release 0  00:18:B2:03:77:7B
 ```
 
 
-* Prior to run the application, it is recommended that you test the IMU sensor by using 
+* Prior to run the application, it is recommended that you test the IMU sensor by using
 ```
 sudo miniterm.py -d /dev/rfcomm0 -b 9600
 ```
 
 
 N bluetooth devices
---
-In order to connect to N bluetooth devices automatically, 
+============================
+
+In order to connect to N bluetooth devices automatically,
 it would be easier to add the mac addresses of the bluetooth modules in rfcomm.conf file.
-To do this, you have to either create or open the "/etc/bluetooth/rfcomm.conf" 
+To do this, you have to either create or open the "/etc/bluetooth/rfcomm.conf"
 
 ```
 $sudo vim /etc/bluetooth/rfcomm.conf
@@ -69,7 +74,7 @@ rfcomm0 {
         comment "Serial Port";
         }
 ```
-Then, simply run to 
+Then, simply run to
 ```
 $sudo rfcomm connect 0
 Connected /dev/rfcomm0 to 00:18:B2:03:77:7B on channel 1
@@ -77,22 +82,13 @@ Press CTRL-C for hangup
 
 ```
 
+You can also simply modify https://github.com/mxochicale/decimus/blob/master/bluetooth/rfcomm.conf
 
-Connecting  Bluetooth Adaptor(s) (dongle(s))
+Connecting  Bluetooth Adaptors (dongles)
+============================
+
+BLUENEXT micro bluetooth2.0 USB adaptor
 --
-
-* BLUENEXT micro bluetooth2.0 USB adaptor 
-
-Disconnect bluetooth adaptor 
-
-```
-$ dmesg|tail
-[24792.223574] usb 9-2: USB disconnect, device number 4
-[24796.460743] init: bluetooth main process ended, respawning
-```
-
-Connect BLUENEXT micro bluetooth USB adaptor 
-
 
 ```
 $ dmesg|tail
@@ -108,11 +104,14 @@ Bus 009 Device 004: ID 0a12:0001 Cambridge Silicon Radio, Ltd Bluetooth Dongle (
 ```
 
 
-Then, turn on the Bluetooth module
+```
+$ hcitool dev
+Devices:
+	hci0	00:1A:7D:DA:71:13
+```
 
-
-* Uscing Bluetooth 4.0 dongle CSR8510
-
+Bluetooth 4.0 dongle CSR8510
+--
 
 ```
 $ dmesg|tail
@@ -127,15 +126,8 @@ $ lsusb
 Bus 009 Device 007: ID 0a12:0001 Cambridge Silicon Radio, Ltd Bluetooth Dongle (HCI mode)
 ```
 
-
-```
-$ hcitool dev
-Devices:
-	hci0	00:1A:7D:DA:71:13
-```
-
-
-* Two Bluetooth Adaptors
+Two Bluetooth Adaptors
+--
 
 ```
 $ lsusb
@@ -151,11 +143,12 @@ Devices:
 ```
 
 
-If you have more than 1 bluetooth hardware devices and would
-like to use second one, use hciconfig to find the adaptor name and
-then use that name in place of hci#. Command as below
 
-```$ hcitool scan
+Connecting four ARF7044 bluetooth modules to two different bluetooth dongles (bluenext and CSR 4.0)
+--
+
+```
+$ hcitool scan
 Scanning ...
 	00:19:0E:08:0A:3F	eee294.bham.ac.uk-0
 	00:18:B2:03:77:7C	Serial Port Device
@@ -172,7 +165,6 @@ Devices:
 ```
 
 
-Connecting four ARF7044 bluetooth modules to two different bluetooth dongles (blue next and CSR 4.0)
 
 ```
 $ rfcomm -i hci0 connect 0
@@ -199,28 +191,21 @@ Press CTRL-C for hangup
 ```
 
 
-```
-$ sudo /etc/init.d/bluetooth restart
- * Stopping bluetooth                                                                          [ OK ] 
- * Starting bluetooth                                                                          [ OK ] 
-```
-
-References
-http://www.armadeus.com/wiki/index.php?title=Bluetooth
-for [$ rfcomm -i hci0 listen /dev/rfcomm0 7 &]
-
-
-
-Restarting Bluetooth Adaptors 
+Useful commands
 --
 
-To restart the bluetooth daemon:
+
+* To restart the bluetooth daemon:
+
 ```
 $ sudo /etc/init.d/bluetooth restart
+ * Stopping bluetooth                                                                          [ OK ]
+ * Starting bluetooth                                                                          [ OK ]
 ```
+
 
 Setting up the BlueSMiRF's baudrate
---
+======================================
 
 ```
 $ hcitool scan
@@ -265,19 +250,15 @@ $---
 END
 ```
 
-once the bluetooth dongle has been configurated, you need to change the daudrate to stablish any connection
-:~/mxochicale/port-tools/miniterm$ sudo miniterm.py /dev/ttyUSB0 -b 57600
+once the bluetooth dongle has been configurated, you need to change the baudrate to establish any connection
+
+```
+$ sudo miniterm.py /dev/ttyUSB0 -b 57600
+```
 
 
 
-
-
-References:
-https://myraspberryandme.wordpress.com/2013/11/20/bluetooth-serial-communication-with-hc-05/
-
-
-
-Multiple Sensors
+Multiple Terminals
 =====================
 
 Expect is useful for running any program which requires interaction between the program and the user.
@@ -289,9 +270,10 @@ $sudo apt-get install expect
 
 
 
+References
+===========
+https://myraspberryandme.wordpress.com/2013/11/20/bluetooth-serial-communication-with-hc-05/
 
 
-
-
-
-
+http://www.armadeus.com/wiki/index.php?title=Bluetooth
+for [$ rfcomm -i hci0 listen /dev/rfcomm0 7 &]

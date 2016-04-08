@@ -9,11 +9,11 @@ time delay embedding theorem and PCA algorithms using
 Information, updates, bug reports, contributions and feedback:
 https://github.com/mxochicale/decimus
 
-CopyLeft (C) April 2016
+> Miguel Xochicale <http://mxochicale.github.io>,  
+> Doctoral Researcher in Human-Robot Interaction,  
+> University of Birmingham, U.K. (2014-2017)  
 
-> Miguel Xochicale <http://mxochicale.github.io>,
-> Doctoral Researcher in Human-Robot Interaction,
-> University of Birmingham, U.K. (2014-2017)
+CopyLeft (C) April 2016
 
 
 2. decimus repository
@@ -60,29 +60,9 @@ Or wget::
    $ cd decimus-master
 ```
 
-4. How to use it
-=====================
-
-Arduino
----
-
-Arduino IDE : Select board "Arduino Pro or Pro Mini (3.3v, 8Mhz) w/ATmega328"
-#define OUTPUT__STARTUP_STREAM_ON false // L192
-
-#define HW__VERSION_CODE 10724 // L164 SparkFun "9DOF Sensor Stick" version "SEN-10724" (HMC5883L magnetometer)
 
 
-
-Following th
-[Razor Arduino](https://github.com/ptrbrtz/razor-9dof-ahrs/tree/master/Arduino)
-
-
-
-
-
-
-
-6. Issues
+4. Issues
 ==============
 
 NOTA BENE.
@@ -145,11 +125,8 @@ baud rate (57600)
 * PARTIALLY DONE: Edit README.md from lib_dependencies
 * PARTIALLY DONE: Check the R file comments and add another file for the euler angles
 
-* DIRECTORY DEVELOPMENT DESCRIPTIONS
-- Fri Feb 12 12:30:36 GMT 2016
-
-src_getonesample # project that use #f to get one sample
-src_twosensors00 # project that can read two razor sensors
-src_twosensors01 # project that has been changed to work with one sensor
-
-src_twosensors** got the decimus class which should be merged with RazorAHRS
+* DIRECTORY DEVELOPMENT DESCRIPTION  Fri Feb 12 12:30:36 GMT 2016
+src_getonesample # project that use #f to get one sample  
+src_twosensors00 # project that can read two razor sensors  
+src_twosensors01 # project that has been changed to work with one sensor  
+src_twosensors** got the decimus class which should be merged with RazorAHRS  
