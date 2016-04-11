@@ -1,9 +1,13 @@
 cmake_minimum_required(VERSION 1.8)
 
 set(PRJ_NAME kproject)
+
+#set(ARMA_VER armadillo-5.100.1)
+set(ARMA_VER armadillo-6.700.3)
+
 project(${PRJ_NAME})
 
-include_directories(~/.lib_dependencies/armadillo-5.100.1/include)
+include_directories(~/.lib_dependencies/${ARMA_VER}/include)
 include_directories(~/.lib_dependencies/boost-1.58.0/include)
 
 include_directories(/usr/include/libxml2/)

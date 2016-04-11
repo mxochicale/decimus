@@ -3,6 +3,7 @@
 
 # TODO
 # * add line to create build directory [Wed Dec 16 15:50:04 GMT 2015]
+# this might help: http://stackoverflow.com/questions/1950926/create-directories-using-make-file
 
 
 CXX=g++
@@ -12,7 +13,10 @@ CXX=g++
 # you should need to tell the compiler where they are.
 LIB_DEP_PATH = ~/.lib_dependencies
 
-ARMA_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/armadillo-5.100.1/include
+#ARMA_VER = armadillo-5.100.1
+ARMA_VER = armadillo-6.700.3
+
+ARMA_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/${ARMA_VER}/include
 BOOST_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/boost-1.58.0/include
 BOOST_LIB_FLAG=  -L ${LIB_DEP_PATH}/boost-1.58.0/lib64
 
@@ -29,16 +33,13 @@ OPT = -O2
 ## -O2: produces programs which have almost all possible speedups, but compilation takes longer
 ## -O3: enables auto vectorisation when using gcc
 
-OUT = /out 
-
-
 CXXFLAGS = $(ARMA_INCLUDE_FLAG) $(FLAGS) $(BOOST_INCLUDE_FLAG) $(BOOST_LIB_FLAG) $(OPT)
-
 
 all: main
 
 main: main.cpp
 	g++ $(CXXFLAGS) -o $@ $< $(CLASSES) $(LIB_FLAGS)
+
 
 .PHONY: clean help
 
