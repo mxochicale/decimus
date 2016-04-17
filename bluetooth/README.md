@@ -51,8 +51,14 @@ $ sudo rfcomm release 0  00:18:B2:03:77:7B
 
 * Prior to run the application, it is recommended that you test the IMU sensor by using
 ```
-sudo miniterm.py -d /dev/rfcomm0 -b 9600
+$ sudo miniterm.py /dev/rfcomm0 -b 57600
+--- Miniterm on /dev/rfcomm0: 57600,8,N,1 ---
+--- Quit: Ctrl+]  |  Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
 ```
+
+      // Streaming output
+      "#o0" - DISABLE continuous streaming output. Also see #f below.
+      "#o1" - ENABLE continuous streaming output.
 
 
 N bluetooth devices
