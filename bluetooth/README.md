@@ -49,9 +49,11 @@ $ sudo rfcomm release 0  00:18:B2:03:77:7B
 ```
 
 
-* Prior to run the application, it is recommended that you test the IMU sensor by using
+* Prior to run the application, it is recommended that you test the IMU sensor using
+miniterm. [Download the latest version of miniterm](https://github.com/pyserial/pyserial/blob/master/serial/tools/miniterm.py)
+
 ```
-$ sudo miniterm.py /dev/rfcomm0 -b 57600
+$ sudo miniterm.py /dev/rfcomm0 57600
 --- Miniterm on /dev/rfcomm0: 57600,8,N,1 ---
 --- Quit: Ctrl+]  |  Menu: Ctrl+T | Help: Ctrl+T followed by Ctrl+H ---
 ```
@@ -230,7 +232,7 @@ $ ll /dev/serial/by-id/
 
 To change default baud rate, follow these instructions
 A good tutorial to change the  BAUD rate on BlueSMiRF Gold is available at https://www.youtube.com/watch?v=Qa-G0FvI98U
-$ sudo miniterm.py /dev/ttyUSB0 -b 115200
+$ sudo miniterm.py /dev/ttyUSB0 115200
 
 ```
 $$$$
