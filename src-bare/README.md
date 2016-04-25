@@ -32,7 +32,7 @@ rm -f *.o *~ example
 
 Source code has been tested on:
 --
-* Raspberry PI 3
+* Raspberry PI 3 -- Ubuntu-mate
 ```
 $ date
 Sat 23 Apr 01:13:35 BST 2016
@@ -47,5 +47,18 @@ Codename:	xenial
 $ uname -a
 Linux pi3-desktop 4.1.19-v7+ #858 SMP Tue Mar 15 15:56:00 GMT 2016 armv7l armv7l armv7l GNU/Linux
 ```
+
+* Raspberry PI 3 -- Raspbian jessie
+
+  $ Mon 25 Apr 20:17:26 UTC 2016  
+
+  $ lsb_release -a  
+  No LSB modules are available.  
+  Distributor ID:	Raspbian  
+  Description:	Raspbian GNU/Linux 8.0 (jessie)  
+  Release:	8.0  
+  Codename:	jessie  
+
+  $  uname -a  Linux raspberrypi 4.1.19-v7+ #858 SMP Tue Mar 15 15:56:00 GMT 2016 armv7l GNU/Linux
 
 
