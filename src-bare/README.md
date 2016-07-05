@@ -3,7 +3,7 @@
 Example of Usage
 --
 
-Compile test program:	
+Compile test program:
 ```
 $ make
 g++ -c Example.cpp -Wall -D_REENTRANT -lpthread
@@ -62,3 +62,17 @@ Linux pi3-desktop 4.1.19-v7+ #858 SMP Tue Mar 15 15:56:00 GMT 2016 armv7l armv7l
   $  uname -a  Linux raspberrypi 4.1.19-v7+ #858 SMP Tue Mar 15 15:56:00 GMT 2016 armv7l GNU/Linux
 
 
+
+  * 	Ubuntu 14.04.3 LTS x86_64
+
+    $ date  
+    Tue Jul  5 17:04:10 BST 2016  
+
+    $ lsb_release -a  
+    Distributor ID:	Ubuntu  
+    Description:	Ubuntu 14.04.3 LTS  
+    Release:	14.04  
+    Codename:	trusty  
+
+    $  uname -a  
+    Linux eee320 3.13.0-91-generic #138-Ubuntu SMP Fri Jun 24 17:00:34 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux  

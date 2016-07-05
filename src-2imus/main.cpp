@@ -55,7 +55,6 @@ std::string sensorname_imu1 = "imu1"; 		// Set imu tag name
 RazorAHRS *razor_0; 	//razor pointer Object
 RazorAHRS *razor_1; 	//razor pointer Object
 
-
 Decimus DataAnalysis_0;  	//DataAnalysis Object
 Decimus DataAnalysis_1;  	//DataAnalysis Object
 

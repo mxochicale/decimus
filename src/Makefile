@@ -9,7 +9,7 @@
 CXX=g++
 
 ##
-# If you've installed Armadillo and boost's headers manually, 
+# If you've installed Armadillo and boost's headers manually,
 # you should need to tell the compiler where they are.
 LIB_DEP_PATH = ~/.lib_dependencies
 
@@ -24,7 +24,7 @@ LIB_FLAGS = -lblas -llapack -lpthread -lboost_system
 #-lboost_system (need it to create a directory)
 
 CLASSES = RazorAHRS.cpp Decimus.cpp
-FLAGS = -Wall -D_REENTRANT 
+FLAGS = -Wall -D_REENTRANT
 
 OPT = -O2
 ## As the Armadillo library uses recursive templates, compilation times depend on the level of optimisation:
@@ -33,22 +33,31 @@ OPT = -O2
 ## -O2: produces programs which have almost all possible speedups, but compilation takes longer
 ## -O3: enables auto vectorisation when using gcc
 
+
+EXECUTABLE = kproject
+BUILD_DIR = build
+
+
+
+
 CXXFLAGS = $(ARMA_INCLUDE_FLAG) $(FLAGS) $(BOOST_INCLUDE_FLAG) $(BOOST_LIB_FLAG) $(OPT)
 
 all: main
 
 main: main.cpp
-	g++ $(CXXFLAGS) -o $@ $< $(CLASSES) $(LIB_FLAGS)
+	mkdir -p $(BUILD_DIR)
+	g++ $(CXXFLAGS) $< $(CLASSES) $(LIB_FLAGS) -o $(BUILD_DIR)/$(EXECUTABLE)
+
 
 
 .PHONY: clean help
 
-clean: 
-	rm -f main example *.*~ *~
+clean:
+	rm -f main example *.*~ *~  $(EXECUTABLE)
 	rm -rf .kdev4
 	rm -rf build
 	@echo "Clean done"
 
 help:
 	@echo "Please use \`make <target>' where <target> is one of"
-	@echo " clean to remove binary and temporary files"                       
+	@echo " clean to remove binary and temporary files"

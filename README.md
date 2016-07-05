@@ -13,33 +13,48 @@ Additionally, decimus class has methods to run some linear algebra operations su
 2. decimus repository
 ============================
 
-2.1 bluetooth
+bluetooth
 ---
 bluetooth contains useful information to configure the dongles, linux machine and some commands
 
-2.2 data
+ data
 ---
 data contains a test directory which has data from the sensor in a cvs file.
 
-2.3 lib_dependencies
+lib_dependencies
 ---
 testing_libs directory contains several examples to test armadillo
 and boost libraries. It also contains a README.md file for library installation.
 
-2.4 r-code
+r-code
 ---
 r-code contains R source code to read and plot the data from an csv file.
 
-2.5 razor_calibration
+razor_calibration
 ---
 razor_calibration contains library dependencies, commands and previous calibration values
 for the razor sensor.
 
-2.6 src
+src
 ---
 src contains the source code project files:
 Make Project: main.cpp, Decimus.h, Decimus.cpp, RazorAHRS.h, RazorAHRS.cpp and Makefile.
 Kdevelop Project: CMakeList.txt, src-kproject.kdev4
+
+
+src-bare
+---
+It is the most basic project to use the RazorAHRS c++ class.
+
+
+
+src-2imus
+---
+You can connect two RazorAHRS sensors and collect data simultaneously.
+
+NB. I have to do some analysis with the time-delay synchonization when
+using data from both sensors.
+
 
 
 3. Download
@@ -114,9 +129,10 @@ baud rate (57600)
 5. TO DO List
 =============
 
-* When the project is compiled with make, a directory is create in the main root of the
+* DONE When the project is compiled with make, a directory is create in the main root of the
   source code, it is therefore suggested to modify.
   (the Makefile project to create a build directory in src path.)
+
 * PARTIALLY DONE: Check the methods at decimus class that save the values for
   YAW_PITCH_ROLL, ACC_MAG_GYR_RAW, and ACC_MAG_GYR_CALIBRATED
 * Check the R file comments and add another file for the euler angles
