@@ -12,20 +12,25 @@
 *     https://github.com/ptrbrtz/razor-9dof-ahrs
 ******************************************************************************************/
 
-#include <iostream>   // cout()
-#include <iomanip>    // setprecision() etc.
-#include <stdexcept>  // runtime_error
-#include <cstdio>     // getchar()
+
 #include "RazorAHRS.h"
 
-using namespace std;
 
 
 // Set your serial port here!
 //const string serial_port_name = "/dev/tty.FireFly-6162-SPP"; 
 //const string serial_port_name = "/dev/tty.usbserial-A700eEhN";
 //const string serial_port_name = "/dev/ttyUSB0"; // a good guess on linux
-const string serial_port_name = "/dev/rfcomm0"; // bluetoot port
+
+const string serial_port_name_0 = "/dev/rfcomm0"; // bluetooth  serial port
+const string serial_port_name_1 = "/dev/rfcomm1"; // bluetooth  serial port
+std::string sensorname_imu0 = "imu0"; 		// Set imu tag name
+std::string sensorname_imu1 = "imu1"; 		// Set imu tag name
+
+
+RazorAHRS *razor_0; 	//razor pointer Object
+RazorAHRS *razor_1; 	//razor pointer Object
+
 
 // Razor error callback handler
 // Will be called from (and in) Razor background thread!
@@ -37,30 +42,45 @@ void on_error(const string &msg)
   // save or pass the reference itself, it will not be valid after this function returns! 
 }
 
-// Razor data callback handler
-// Will be called from (and in) Razor background thread!
-// 'data' depends on mode that was set when creating the RazorAHRS object. In this case 'data'
-// holds 3 float values: yaw, pitch and roll.
-void on_data(const float data[])
+// // Razor data callback handler
+// // Will be called from (and in) Razor background thread!
+// // 'data' depends on mode that was set when creating the RazorAHRS object. In this case 'data'
+// // holds 3 float values: yaw, pitch and roll.
+// void on_data(const float data[])
+// {
+//   //**//cout << "  " << fixed << setprecision(1) 
+//   //**//<< "Yaw = " << setw(6) << data[0] << "      Pitch = " << setw(6) << data[1] << "      Roll = " << setw(6) << data[2] << endl;
+// 
+//   // NOTE: make a copy of the yaw/pitch/roll data if you want to save it or send it to another
+//   // thread. Do not save or pass the pointer itself, it will not be valid after this function
+//   // returns!
+//   
+//   // If you created the Razor object using RazorAHRS::ACC_MAG_GYR_RAW or RazorAHRS::ACC_MAG_GYR_CALIBRATED
+//   // instead of RazorAHRS::YAW_PITCH_ROLL, 'data' would contain 9 values that could be printed like this:
+//   
+//   // cout << "  " << fixed << setprecision(1)
+//   // << "ACC = " << setw(6) << data[0] << ", " << setw(6) << data[1] << ", " << setw(6) << data[2]
+//   // << "       MAG = " << setw(7) << data[3] << ", " << setw(7) << data[4] << ", " << setw(7) << data[5]
+//   // << "       GYR = " << setw(7) << data[6] << ", " << setw(7) << data[7] << ", " << setw(7) << data[8] << endl;
+// 
+// }
+
+
+void on_data_0(const float data[])
 {
-  //**//cout << "  " << fixed << setprecision(1) 
-  //**//<< "Yaw = " << setw(6) << data[0] << "      Pitch = " << setw(6) << data[1] << "      Roll = " << setw(6) << data[2] << endl;
-
-  // NOTE: make a copy of the yaw/pitch/roll data if you want to save it or send it to another
-  // thread. Do not save or pass the pointer itself, it will not be valid after this function
-  // returns!
   
-  // If you created the Razor object using RazorAHRS::ACC_MAG_GYR_RAW or RazorAHRS::ACC_MAG_GYR_CALIBRATED
-  // instead of RazorAHRS::YAW_PITCH_ROLL, 'data' would contain 9 values that could be printed like this:
+   cout << "  " << fixed << setprecision(1) 
+   << "ZERO Yaw = " << setw(6) << data[0] << "      Pitch = " << setw(6) << data[1] << "      Roll = " << setw(6) << data[2] << endl;
   
-  // cout << "  " << fixed << setprecision(1)
-  // << "ACC = " << setw(6) << data[0] << ", " << setw(6) << data[1] << ", " << setw(6) << data[2]
-  // << "       MAG = " << setw(7) << data[3] << ", " << setw(7) << data[4] << ", " << setw(7) << data[5]
-  // << "       GYR = " << setw(7) << data[6] << ", " << setw(7) << data[7] << ", " << setw(7) << data[8] << endl;
-
 }
 
-RazorAHRS *razor;
+void on_data_1(const float data[])
+{
+   cout << "  " << fixed << setprecision(1) 
+   << "ONE  Yaw = " << setw(6) << data[0] << "      Pitch = " << setw(6) << data[1] << "      Roll = " << setw(6) << data[2] << endl;
+}
+
+
 int main()
 {
   cout << endl;
@@ -76,7 +96,10 @@ int main()
     // We want to receive yaw/pitch/roll data. If we wanted the unprocessed raw or calibrated sensor
     // data, we would pass RazorAHRS::ACC_MAG_GYR_RAW or RazorAHRS::ACC_MAG_GYR_CALIBRATED
     // instead of RazorAHRS::YAW_PITCH_ROLL.
-    razor = new RazorAHRS(serial_port_name, on_data, on_error, RazorAHRS::YAW_PITCH_ROLL);
+    //razor = new RazorAHRS(serial_port_name_0, on_data, on_error, RazorAHRS::YAW_PITCH_ROLL);
+    
+    razor_0 = new RazorAHRS(serial_port_name_0, on_data_0, on_error, RazorAHRS::YAW_PITCH_ROLL);
+    razor_1 = new RazorAHRS(serial_port_name_1, on_data_1, on_error, RazorAHRS::YAW_PITCH_ROLL);
     
     // NOTE: If these callback functions were members of a class and not global
     // functions, you would have to bind them before passing. Like this:
@@ -105,7 +128,10 @@ int main()
   }
   
   getchar();  // wait for RETURN key
-  razor -> disable_continuous_streaming_output();
+  razor_0 -> disable_continuous_streaming_output();
+  razor_1 -> disable_continuous_streaming_output();
+  
+  
   return 0;
 }
 

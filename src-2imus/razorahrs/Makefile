@@ -1,8 +1,7 @@
-# Makefile for the RazorAHRS C++ project Using armadillo library
-# Miguel Xochicale
+
 
 CC=g++
-LIB_FLAGS=-lpthread 
+LIB_FLAGS=-lpthread
 CFLAGS=-Wall -D_REENTRANT
 
 
@@ -15,18 +14,18 @@ OBJECTS= $(SOURCES:.cpp=.o)
 
 
 LIB_DEP_PATH=~/.lib_dependencies
-EIGEN_VER=armadillo-5.100.1
-EIGEN_INCLUDE_FLAG= -I ${LIB_DEP_PATH}/${EIGEN_VER}/include
-EIGENFLAGS=${ARMA_INCLUDE_FLAG} ${OPT}
-
+lib_name=eigen
+lib_version=3.2.8
+EIGEN_INCLUDE_FLAG = -I ${LIB_DEP_PATH}/${lib_name}-${lib_version}/include/eigen3/
 
 
 %.o: %.cpp $(DEPS)
-	$(CC) -c $<  $(CFLAGS) $(LIB_FLAGS)
+	$(CC) -c $<  $(CFLAGS) $(LIB_FLAGS) $(EIGEN_INCLUDE_FLAG)
 
 all: $(OBJECTS)
 	mkdir -p $(BUILD_DIR)
-	$(CC) $(OBJECTS) $(CFLAGS) $(LIB_FLAGS) -o $(BUILD_DIR)/$(EXECUTABLE)
+	$(CC) $(OBJECTS) $(CFLAGS) $(LIB_FLAGS) $(EIGEN_INCLUDE_FLAG) -o $(BUILD_DIR)/$(EXECUTABLE)
+
 
 clean:
 	rm -f *.o *~ $(EXECUTABLE)

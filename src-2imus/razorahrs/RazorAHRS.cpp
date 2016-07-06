@@ -15,8 +15,8 @@
 #include "RazorAHRS.h"
 
 
-RazorAHRS::RazorAHRS(const std::string &port, DataCallbackFunc data_func, ErrorCallbackFunc error_func,
-    Mode mode, int connect_timeout_ms, speed_t speed)
+RazorAHRS::RazorAHRS(const std::string &port, DataCallbackFunc data_func, ErrorCallbackFunc error_func, Mode mode, 
+    int connect_timeout_ms, speed_t speed)
     : _mode(mode)
     , _input_pos(0)
     , _connect_timeout_ms(connect_timeout_ms)
@@ -89,8 +89,8 @@ RazorAHRS::RazorAHRS(const std::string &port, DataCallbackFunc data_func, ErrorC
   // start input/output thread
   _start_io_thread();
 
-  RazorAHRS::_mkfile();
-  _sample = 0; // Initialise discrete time sample
+//   RazorAHRS::_mkfile();
+//   _sample = 0; // Initialise discrete time sample
 
 
 }
@@ -126,6 +126,7 @@ string fullpath = (RazorAHRS::_get_current_path()+"/"+directoryName+"/");
 int makefullpath = mkdir( ((fullpath).c_str()),S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
 
 
+
 // Write to a file
 string fileName = "rawdata";
 string pathfileName = (fullpath+fileName);
@@ -137,8 +138,8 @@ RazorAHRS::_write2file.open( pathfileName.c_str(), ios::out );
 //RazorAHRS::_datafile << "Sample, Yaw, Pitch, Roll" << endl;
 
 
-
 }
+
 
 
 
@@ -155,52 +156,6 @@ return path;
 }
 
 
-
-
-
-// void
-// RazorAHRS::_push_back_vectors(float X, float Y, float Z)
-// {
-//
-//
-// int windowframe = 10;
-// rowvec row_vector; //frowvec 	 =  	Row<float>  .... //rowvec 	 =  	Row<double>
-//
-//
-//
-// if (RazorAHRS::_modulus(_sample, windowframe) == 0)
-// {
-// _push_back_matrix.clear();
-// row_vector << X << Y << Z;
-//
-//
-// _push_back_matrix.insert_rows(0,row_vector);
-//
-// }
-// else
-// {
-// row_vector << X << Y << Z;
-//
-// _push_back_matrix.insert_rows(RazorAHRS::_modulus(_sample, windowframe),row_vector);
-// }
-//
-//
-//
-// if (RazorAHRS::_modulus(_sample, windowframe) == windowframe-1)
-// {
-// _push_back_matrix.print("pushbackmatrix: ");
-//
-// mat vector_mean = mean(_push_back_matrix,0); // column matrix mean
-//
-//
-// vector_mean.raw_print(std::cout, "mean: ");
-//
-//
-// RazorAHRS::_write2file << vector_mean << endl;
-// }
-//
-// }
-//
 
 
 
@@ -471,14 +426,13 @@ RazorAHRS::_thread(void *arg)
 
 
 //           cout << _sample << endl;
-          cout << _input_buf.ypr[0] << "," << _input_buf.ypr[1]  << "," << _input_buf.ypr[2] << endl;
+//           cout << _input_buf.ypr[0] << "," << _input_buf.ypr[1]  << "," << _input_buf.ypr[2] << endl;
+// 	  RazorAHRS::_write2file  << _input_buf.ypr[0] << "," << _input_buf.ypr[1]  << "," << _input_buf.ypr[2] << endl;
+//             _sample++;
 
-    RazorAHRS::_write2file  << _input_buf.ypr[0] << "," << _input_buf.ypr[1]  << "," << _input_buf.ypr[2] << endl;
 
 
 
-//             RazorAHRS::_push_back_vectors(_input_buf.ypr[0], _input_buf.ypr[1], _input_buf.ypr[2]);
-            _sample++;
 
 
           // invoke callback

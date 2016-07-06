@@ -47,17 +47,24 @@ using namespace std;
 
 
 
-       #include <limits.h>  //       realpath - return the canonicalized absolute pathname
-       #include <stdlib.h> //       realpath - return the canonicalized absolute pathname
+#include <limits.h>  //       realpath - return the canonicalized absolute pathname
+#include <stdlib.h> //       realpath - return the canonicalized absolute pathname
 
+
+
+
+#include <iomanip>    // setprecision() etc.
+#include <stdexcept>  // runtime_error
+#include <cstdio>     // getchar()
 
 
 
 // #include "armadillo" // C++ linear algebra library
 // using namespace arma;
-// #include <iomanip>
 
 
+#include <Eigen/Dense>
+using namespace Eigen;
 
 
 #ifndef _REENTRANT
@@ -77,8 +84,8 @@ class RazorAHRS
     typedef std::tr1::function<void(const float[])> DataCallbackFunc;
     typedef std::tr1::function<void(const std::string&)> ErrorCallbackFunc;
 
-    RazorAHRS(const std::string &port, DataCallbackFunc data_func, ErrorCallbackFunc error_func,
-        Mode mode, int connect_timeout_ms = 5000, speed_t speed = B57600);
+    RazorAHRS(const std::string &port, DataCallbackFunc data_func, ErrorCallbackFunc error_func, Mode mode, 
+	      int connect_timeout_ms = 5000, speed_t speed = B57600);
     ~RazorAHRS();
 
 	//send #o0 to stop the streaming
