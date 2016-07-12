@@ -136,3 +136,31 @@ void output_sensors()
 
 
 
+void output_quaternions()
+{
+
+  Serial.print("#A-");  Serial.print('=');
+  Serial.print(accel[0]); Serial.print(",");
+  Serial.print(accel[1]); Serial.print(",");
+  Serial.print(accel[2]); Serial.println();
+
+  Serial.print("#M-");  Serial.print('=');
+  Serial.print(magnetom[0]); Serial.print(",");
+  Serial.print(magnetom[1]); Serial.print(",");
+  Serial.print(magnetom[2]); Serial.println();
+
+  Serial.print("#G-");  Serial.print('=');
+  Serial.print(gyro[0]); Serial.print(",");
+  Serial.print(gyro[1]); Serial.print(",");
+  Serial.print(gyro[2]); Serial.println();
+  
+  Serial.print("#Q-");  Serial.print('=');
+  Serial.print(q[0]); Serial.print(",");
+  Serial.print(q[1]); Serial.print(",");
+  Serial.print(q[2]); Serial.print(",");
+  Serial.print(q[3]); Serial.println();
+ 
+}
+
+
+

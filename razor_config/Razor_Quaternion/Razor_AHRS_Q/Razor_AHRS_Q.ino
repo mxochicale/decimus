@@ -192,7 +192,7 @@ int output_mode = OUTPUT__MODE_ANGLES;
 int output_format = OUTPUT__FORMAT_TEXT;
 
 // Select if serial continuous streaming output is enabled per default on startup.
-#define OUTPUT__STARTUP_STREAM_ON true  // true or false
+#define OUTPUT__STARTUP_STREAM_ON false  // true or false
 
 // If set true, an error message will be output if we fail to read sensor data.
 // Message format: "!ERR: reading <sensor>", followed by "\r\n".
@@ -225,7 +225,6 @@ boolean output_errors = false;  // true or false
 /// Refer to Paper, Page 2 of the provided document for best /////
 /// approach to obtain the min and max values. ///////////////////
 //////////////////////////////////////////////////////////////////
-
 #define ACCEL_X_MIN ((float) -268)
 #define ACCEL_X_MAX ((float) 254)
 #define ACCEL_Y_MIN ((float) -255)
@@ -254,8 +253,9 @@ boolean output_errors = false;  // true or false
 // Magnetometer (extended calibration)
 // Uncommend to use extended magnetometer calibration (compensates hard & soft iron errors)
 #define CALIBRATION__MAGN_USE_EXTENDED true
-const float magn_ellipsoid_center[3] = {-17.9313, 95.3543, 15.0557};
-const float magn_ellipsoid_transform[3][3] = {{0.865366, -0.00140210, -0.0271258}, {-0.00140210, 0.870332, 0.00259720}, {-0.0271258, 0.00259720, 0.994471}};
+const float magn_ellipsoid_center[3] = {-20.7501, 110.810, 9.81764};
+const float magn_ellipsoid_transform[3][3] = {{0.822359, -0.0137044, -0.0305710}, {-0.0137044, 0.882315, 0.00568446}, {-0.0305710, 0.00568446, 0.994184}};
+
 
 // Gyroscope
 // "gyro x,y,z (current/average) = .../OFFSET_X  .../OFFSET_Y  .../OFFSET_Z
@@ -771,9 +771,10 @@ void loop()
 /// Currently it is set to "output_angles()", which outputs //////
 /// the yaw, pitch, and roll values in degrees. Click on the /////
 /// Output Tab above to see the output_angles() and //////////////
-/// output_sensors() funcitons ///////////////////////////////////
+/// output_sensors() functions ///////////////////////////////////
 //////////////////////////////////////////////////////////////////
-      
+
+      //if (output_stream_on || output_single_on) output_quaternions();
       if (output_stream_on || output_single_on) output_angles();
     }
     else  // Output sensor values
