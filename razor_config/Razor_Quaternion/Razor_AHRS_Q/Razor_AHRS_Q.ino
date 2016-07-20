@@ -225,16 +225,15 @@ boolean output_errors = false;  // true or false
 /// Refer to Paper, Page 2 of the provided document for best /////
 /// approach to obtain the min and max values. ///////////////////
 //////////////////////////////////////////////////////////////////
-#define ACCEL_X_MIN ((float) -268)
-#define ACCEL_X_MAX ((float) 254)
-#define ACCEL_Y_MIN ((float) -255)
-#define ACCEL_Y_MAX ((float) 247)
-#define ACCEL_Z_MIN ((float) -269)
-#define ACCEL_Z_MAX ((float) 238)
+#define ACCEL_X_MIN ((float) -283)
+#define ACCEL_X_MAX ((float) 272)
+#define ACCEL_Y_MIN ((float) -259)
+#define ACCEL_Y_MAX ((float) 290)
+#define ACCEL_Z_MIN ((float) -288)
+#define ACCEL_Z_MAX ((float) 200)
+
 
 //////////////////////////////////////////////////////////////////
-
-
 //////////////////////////////////////////////////////////////////  
 /// Use the provided link above to complete the calibration of ///
 /// the magnetometer and gyro sensors. ///////////////////////////
@@ -252,16 +251,17 @@ boolean output_errors = false;  // true or false
 
 // Magnetometer (extended calibration)
 // Uncommend to use extended magnetometer calibration (compensates hard & soft iron errors)
-#define CALIBRATION__MAGN_USE_EXTENDED true
-const float magn_ellipsoid_center[3] = {-20.7501, 110.810, 9.81764};
-const float magn_ellipsoid_transform[3][3] = {{0.822359, -0.0137044, -0.0305710}, {-0.0137044, 0.882315, 0.00568446}, {-0.0305710, 0.00568446, 0.994184}};
+ #define CALIBRATION__MAGN_USE_EXTENDED true
+ const float magn_ellipsoid_center[3] = {-20.4789, 110.672, 21.1607};
+ const float magn_ellipsoid_transform[3][3] = {{0.946696, 0.0454603, 0.00358561}, {0.0454603, 0.932156, -0.0349348}, {0.00358561, -0.0349348, 0.964808}};
 
 
 // Gyroscope
 // "gyro x,y,z (current/average) = .../OFFSET_X  .../OFFSET_Y  .../OFFSET_Z
-#define GYRO_AVERAGE_OFFSET_X ((float) -57.78)
-#define GYRO_AVERAGE_OFFSET_Y ((float) 45.38)
-#define GYRO_AVERAGE_OFFSET_Z ((float) -2.04)
+#define GYRO_AVERAGE_OFFSET_X ((float) -32.54)
+#define GYRO_AVERAGE_OFFSET_Y ((float) -11.31)
+#define GYRO_AVERAGE_OFFSET_Z ((float) -10.03)
+
 
 /*
 // Calibration example:
