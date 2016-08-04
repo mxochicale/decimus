@@ -1,7 +1,7 @@
 #------------------------------------------------------------
 #  Functions
 #
-#                        miguel [http://mXOCHICALE.github.io]
+#                        miguel [http://mxochicale.github.io]
 #              Doctoral Researcher in Human-Robot Interaction
 #                @ University of Birmingham, U.K. (2014-2018)
 #------------------------------------------------------------
@@ -110,6 +110,7 @@ rotated_angle <- function(eulerangle,threshold)
 ###PLOT ACCELEROMETER DATA
 plot_acc<- function(data,window)
 {
+  #plot_acc <- xyplot( data[window,4] ~ data[window,1],
   plot_acc <- xyplot( data[window,2]+data[window,3]+data[window,4] ~ data[window,1],
                       pch=16, col.line = c('red', 'blue', 'yellow3'), type = c("l","g"), lwd=6,
                       main=list(label=paste(" ",sep=""), cex=2.5),
@@ -117,7 +118,7 @@ plot_acc<- function(data,window)
                       ylab=list(label="Raw Data", cex=3, fontfamily="Times"),
                       scales = list(font=1, cex=2,
                                     y=list(
-                                      at=seq(-600,600,100),limits=c(-650,650)
+                                      at=seq(-1500,1500,250),limits=c(-1450,1450)
                                     )
                       ),
 

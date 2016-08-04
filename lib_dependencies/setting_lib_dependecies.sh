@@ -1,4 +1,5 @@
-!/bin/bash
+#!/bin/bash
+
 #
 #  Miguel Xochicale
 #  Script for download, untar and install armadillo and boost libraries

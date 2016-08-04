@@ -1,10 +1,13 @@
 #------------------------------------------------------------
 #  Displaying the time series data from 2 Razor 9DOF IMU
 #
-#                        miguel [http://mXOCHICALE.github.io]
+#                        miguel [http://mxochicale.github.io]
 #              Doctoral Researcher in Human-Robot Interaction
 #                @ University of Birmingham, U.K. (2014-2018)
 #------------------------------------------------------------
+#
+#source("~/github/decimus-dev/r-code/plot_rawdata_2sensors.R", echo=TRUE)
+#
 
 if (!require("lattice")) install.packages("lattice")
 library(lattice)
@@ -100,7 +103,7 @@ dev.off()
 
 
 TwoSensorAxis <- 4
-TwoSensorWindowFrame <- 000:1000
+TwoSensorWindowFrame <- 000:100
 png(file = "plot_2imus_same_axis.png", width = 1000, height = 700, units = "px", bg = "white")
 plot_2razor_imus(imuA, imuB, TwoSensorAxis, TwoSensorWindowFrame)
 dev.off()

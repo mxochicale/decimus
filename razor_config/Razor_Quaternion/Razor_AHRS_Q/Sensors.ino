@@ -31,7 +31,7 @@ void Accel_Init()
   delay(5);
   Wire.beginTransmission(ACCEL_ADDRESS);
   WIRE_SEND(0x31);  // Data format register
-  WIRE_SEND(0x08);  // Set to full resolution
+  WIRE_SEND(0x09);  // D3 Set to 1 to full resolution and D1-X D0-X to set (+/- 2/4/8/16g)
   Wire.endTransmission();
   delay(5);
   

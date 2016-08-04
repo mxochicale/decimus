@@ -1,10 +1,9 @@
-How to install library dependencies
-=======
-
-TODO
+# How to install library dependencies
 
 
-# Install Library Dependencies
+
+
+## Install Library Dependencies
 
 On Ubuntu 14.04.3 LTS x64, python-dev is installed by default.
 However, for other versions you have to install it by runnning
@@ -19,7 +18,7 @@ Run `setting_lib_dependecies.sh` script that runs automatically the below comman
 ./setting_lib_dependecies.sh
 ```
 
-# Testing libraries
+## Testing libraries
 
 ```
 cd lib_dependencies/testing_libs  
@@ -42,7 +41,7 @@ Please use `make <target>' where <target> is one of
 make <target>
 ```
 
-# References
+## References
 
 * boost documentation
 [http://www.boost.org/doc/libs/1_58_0/more/getting_started/unix-variants.html]

@@ -17,8 +17,8 @@ Calibrating the gyroscope values @N310, Gisbert Kapp(G8)
     Wait for 30 seconds, and do not move the Razor. It will collect data from the gyroscope on all three axes.  
 
 
-imu_0
----
+## imu_0
+
 
 
 ```
@@ -111,10 +111,43 @@ mean GZ  15.9316239316239
 
 ```
 
+* for imu0 replace the following code section
+
+```
+//////////////////////////////////////////////////////////////////  
+/// Refer to Paper, Page 2 of the provided document for best /////
+/// approach to obtain the min and max values. ///////////////////
+//////////////////////////////////////////////////////////////////
+#define ACCEL_X_MIN ((float) -288)  
+#define ACCEL_X_MAX ((float) 274)  
+#define ACCEL_Y_MIN ((float) -276)  
+#define ACCEL_Y_MAX ((float) 280)  
+#define ACCEL_Z_MIN ((float) -319)  
+#define ACCEL_Z_MAX ((float) 185)  
+
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////  
+/// Use the provided link above to complete the calibration of ///
+/// the magnetometer and gyro sensors. ///////////////////////////
+///Magnetometer (extended calibration)
+// Uncommend to use extended magnetometer calibration (compensates hard & soft iron errors)
+
+#define CALIBRATION__MAGN_USE_EXTENDED true
+const float magn_ellipsoid_center[3] = {-20.4789, 110.672, 21.1607};
+const float magn_ellipsoid_transform[3][3] = {{0.946696, 0.0454603, 0.00358561}, {0.0454603, 0.932156, -0.0349348}, {0.00358561, -0.0349348, 0.964808}};
+
+// Gyroscope
+// "gyro x,y,z (current/average) = .../OFFSET_X  .../OFFSET_Y  .../OFFSET_Z
+#define GYRO_AVERAGE_OFFSET_X ((float) -28.69)
+#define GYRO_AVERAGE_OFFSET_Y ((float) 16.19)
+#define GYRO_AVERAGE_OFFSET_Z ((float) 15.93)
+```
 
 
-imu_1
----
+
+
+## imu_1
+
 
 Star: Thu Jul 14 15:17:18 BST 2016
 
@@ -165,11 +198,51 @@ mean GZ  -1.66305818673884
 Finish: Thu Jul 14 15:33:09 BST 2016
 
 
+* for imu1 replace the following code section
+
+```
+//////////////////////////////////////////////////////////////////  
+/// Refer to Paper, Page 2 of the provided document for best /////
+/// approach to obtain the min and max values. ///////////////////
+//////////////////////////////////////////////////////////////////
+#define ACCEL_X_MIN ((float) -274)  
+#define ACCEL_X_MAX ((float) 281)  
+#define ACCEL_Y_MIN ((float) -267)  
+#define ACCEL_Y_MAX ((float) 280)  
+#define ACCEL_Z_MIN ((float) -291)  
+#define ACCEL_Z_MAX ((float) 210)
+
+
+//////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////  
+/// Use the provided link above to complete the calibration of ///
+/// the magnetometer and gyro sensors. ///////////////////////////
+///Magnetometer (extended calibration)
+// Uncommend to use extended magnetometer calibration (compensates hard & soft iron errors)
+
+
+#define CALIBRATION__MAGN_USE_EXTENDED true
+const float magn_ellipsoid_center[3] = {-17.9313, 95.3543, 15.0557};
+const float magn_ellipsoid_transform[3][3] = {{0.865366, -0.00140210, -0.0271258}, {-0.00140210, 0.870332, 0.00259720}, {-0.0271258, 0.00259720, 0.994471}};
+
+
+// Gyroscope
+// "gyro x,y,z (current/average) = .../OFFSET_X  .../OFFSET_Y  .../OFFSET_Z
+
+#define GYRO_AVERAGE_OFFSET_X ((float) -56.12)
+#define GYRO_AVERAGE_OFFSET_Y ((float) 41.72)
+#define GYRO_AVERAGE_OFFSET_Z ((float) -1.66)
+```
 
 
 
-imu_2
----
+
+
+
+
+
+## imu_2
+
 Star: Thu Jul 14 15:37:26 BST 2016
 
 ```
@@ -224,8 +297,7 @@ Finish:Thu Jul 14 16:28:40 BST 2016
 
 
 
-imu_3
----
+### imu_3
 Star: Thu Jul 14 16:38:19 BST 2016
 
 
@@ -268,7 +340,7 @@ mean GZ  -10.0348684210526
 #define GYRO_AVERAGE_OFFSET_Y ((float) -11.31)
 #define GYRO_AVERAGE_OFFSET_Z ((float) -10.03)
 ```
-
+n
 Finish: Thu Jul 14 17:00:19 BST 2016
 
 
@@ -277,16 +349,12 @@ Finish: Thu Jul 14 17:00:19 BST 2016
 
 
 
+## TODO
 
-
-
-
-
-
-TODO
----
 
 In the acc_cal.R, it might be useful to create a file that generate the following file
+
+```
 #define ACCEL_X_MIN ((float) -268)
 #define ACCEL_X_MAX ((float) 254)
 #define ACCEL_Y_MIN ((float) -255)
@@ -295,7 +363,8 @@ In the acc_cal.R, it might be useful to create a file that generate the followin
 #define ACCEL_Z_MAX ((float) 238)
 
 
-
 #define GYRO_AVERAGE_OFFSET_X ((float) -32.54)
 #define GYRO_AVERAGE_OFFSET_Y ((float) -11.31)
 #define GYRO_AVERAGE_OFFSET_Z ((float) -10.03)
+
+```

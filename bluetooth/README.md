@@ -1,13 +1,12 @@
 
 
-Configure rfcomm as regular user
-============================
+# Configure rfcomm as regular user
+
 ```
 sudo chmod u+s /usr/bin/rfcomm
 ```
 
-Pairing Bluetooth Dongle
-============================
+## Pairing Bluetooth Dongle
 It is recommended that you install blueman for pairing the bluetooh modules
 using bluetooth devices application
 
@@ -37,6 +36,7 @@ Ping: 00:18:B2:03:77:7B from AC:xx:xx:xx:xx:xx (data size 44) ...
 ```
 
 * Connect the device to rfcomm 0
+
 ```
 $ sudo rfcomm connect 0 00:18:B2:03:77:7B
 Connected /dev/rfcomm0 to 00:18:B2:03:77:7B on channel 1
@@ -44,6 +44,7 @@ Press CTRL-C for hangup
 ```
 
 * Release the port
+
 ```
 $ sudo rfcomm release 0  00:18:B2:03:77:7B
 ```
@@ -63,8 +64,8 @@ $ sudo miniterm.py /dev/rfcomm0 57600
       "#o1" - ENABLE continuous streaming output.
 
 
-N bluetooth devices
-============================
+## N bluetooth devices
+
 
 In order to connect to N bluetooth devices automatically,
 it would be easier to add the mac addresses of the bluetooth modules in rfcomm.conf file.
@@ -92,11 +93,11 @@ Press CTRL-C for hangup
 
 You can also simply modify https://github.com/mxochicale/decimus/blob/master/bluetooth/rfcomm.conf
 
-Connecting  Bluetooth Adaptors (dongles)
-============================
+## Connecting  Bluetooth Adaptors (dongles)
 
-BLUENEXT micro bluetooth2.0 USB adaptor
---
+
+#### BLUENEXT micro bluetooth2.0 USB adaptor
+
 
 ```
 $ dmesg|tail
@@ -118,8 +119,8 @@ Devices:
 	hci0	00:1A:7D:DA:71:13
 ```
 
-Bluetooth 4.0 dongle CSR8510
---
+#### Bluetooth 4.0 dongle CSR8510
+
 
 ```
 $ dmesg|tail
@@ -134,8 +135,8 @@ $ lsusb
 Bus 009 Device 007: ID 0a12:0001 Cambridge Silicon Radio, Ltd Bluetooth Dongle (HCI mode)
 ```
 
-Two Bluetooth Adaptors
---
+## Two Bluetooth Adaptors
+
 
 ```
 $ lsusb
@@ -152,8 +153,8 @@ Devices:
 
 
 
-Connecting four ARF7044 bluetooth modules to two different bluetooth dongles (bluenext and CSR 4.0)
---
+## Connecting four ARF7044 bluetooth modules to two different bluetooth dongles (bluenext and CSR 4.0)
+
 
 ```
 $ hcitool scan
@@ -278,10 +279,10 @@ $sudo apt-get install expect
 
 
 
-References
-===========
+## References
+
 https://myraspberryandme.wordpress.com/2013/11/20/bluetooth-serial-communication-with-hc-05/
 
 
-http://www.armadeus.com/wiki/index.php?title=Bluetooth
+http://www.armadeus.com/wiki/index.php?title=Bluetooth  
 for [$ rfcomm -i hci0 listen /dev/rfcomm0 7 &]
